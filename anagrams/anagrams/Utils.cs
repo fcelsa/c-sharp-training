@@ -1,11 +1,11 @@
-﻿namespace ClassDictionary
+﻿namespace anagrams
 {
-    public static class AnagramUtils
+    internal class Utils
     {
         public static UInt128 GetProduct(string word)
         {
             UInt128 product = 1;
-            foreach (var c in word)
+            foreach (var c in word.ToLower())
             {
                 product *= GetPrime(c);
             }
@@ -43,5 +43,6 @@
 
             _ => 1,
         };
+
     }
 }
