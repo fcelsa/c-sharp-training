@@ -58,7 +58,6 @@ namespace anagrams
                             case CHG_DICT_KEYWORD:
                                 filePath = GetFileFromUser();
                                 goto START_FILE_REQUEST;
-                                //TODO: c'è un bug importante... bisogna fare una cosa prima di cambiare dizionario...
 
                             case HELP_KEYWORD:
                                 PrintHelp();
@@ -122,6 +121,7 @@ namespace anagrams
             if (File.Exists(filePath))
             {
                 var performance = Stopwatch.GetTimestamp();
+                ListOfParole.Clear();
 
                 foreach (var line in File.ReadLines(filePath))
                 {
