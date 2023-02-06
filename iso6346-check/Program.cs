@@ -27,7 +27,7 @@ namespace iso6346_check
             Console.BackgroundColor= ConsoleColor.Blue;
             Console.ForegroundColor= ConsoleColor.White;
             Console.Clear();
-
+            
             string cntrNumber;
 
             while (true)
@@ -43,7 +43,7 @@ namespace iso6346_check
                     cntrNumber = Console.ReadLine()!;
                 }
 
-                if (string.IsNullOrEmpty(cntrNumber) || cntrNumber.Length < 11 || cntrNumber.Length > 12)
+                if (string.IsNullOrEmpty(cntrNumber) || cntrNumber.Length < 11 || cntrNumber.Length > 12 || !char.IsAsciiDigit(cntrNumber[cntrNumber.Length - 1]))
                 {
                     Console.WriteLine($"Codice container non valido");
                 }
