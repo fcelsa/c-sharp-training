@@ -107,7 +107,10 @@
             Console.WriteLine(np);
 
             // edit from mac 8 Feb 12:29
-            Console.WriteLine($"il valore di a qui ora è 7 --> {a} mentre il valore di b è 2 --> {b}");
+            Console.WriteLine($"il valore di a qui ora è 8 --> {a} mentre il valore di b è 2 --> {b}");
+            Console.WriteLine($"questo perché b ha ricevuto il valore di a prima che fosse incrementato ulteriormente (a++) e mentre a veniva assegnato su b " +
+                $"quando ancora valeva 2 a++ incrementa di 1 solo dopo assumendo il valore di 3 a cui poi è stato sommato 5... totale 8");
+
             
 
         }
