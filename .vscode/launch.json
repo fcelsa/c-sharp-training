@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/exercise-1/bin/Debug/net7.0/exercise-1.dll",
-            "args": ["pippo"],
-            "cwd": "${workspaceFolder}/exercise-1",
+            "program": "${workspaceFolder}/anagrams/anagrams/bin/Debug/net7.0/anagrams.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/anagrams/anagrams",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

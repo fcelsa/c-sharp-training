@@ -56,7 +56,7 @@
 
             // stringhe
             // si possono racchiudere fra ' oppure ""  il che può essere utile per usarle nella stringa stessa,
-            // ma è sempre preferibile il metodo escape dei carattari, per esempio \n è il ritorno a capo e \" serve per fare i doppi apici 
+            // ma è sempre preferibile il metodo escape dei caratteri, per esempio \n è il ritorno a capo e \" serve per fare i doppi apici 
 
             // escape caratteri speciali
             Console.WriteLine("segue una citazione: \n\"ricordati che devi morire\"");
@@ -76,7 +76,7 @@
             string ilPipponeR3 = $"Mentre gli altri tipi hanno sorelle e cugini a volontà ! LoL :-)";
             Console.WriteLine($"qui si vede interpolazione dell'interpolazione \n{ilPipponeR1}\n{ilPipponeR2}\n{ilPipponeR3}\n");
 
-            // string ha diversi metodi, toUpper toLower Lenght indexing IndexOf Substring e molti altri...
+            // string ha diversi metodi, toUpper toLower Length indexing IndexOf Substring e molti altri...
             // la string è sostanzialmente un array di char e quindi può essere indicizzata com []
             // esempi...
 

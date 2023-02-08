@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/exercise-1/exercise-1.csproj",
+                "${workspaceFolder}/anagrams/anagrams/anagrams.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/exercise-1/exercise-1.csproj",
+                "${workspaceFolder}/anagrams/anagrams/anagrams.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/exercise-1/exercise-1.csproj"
+                "${workspaceFolder}/anagrams/anagrams/anagrams.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
