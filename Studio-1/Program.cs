@@ -38,7 +38,7 @@
             //             attenzione il casting è circolare, es. 
             piccoloIntero =(short)grandeIntero;
             Console.WriteLine("piccoloIntero ora vale: " + piccoloIntero + "  e qui si vede cosa significa circolare...");
-            
+
             float fpz = 65.39f;
             int pz = (int)fpz;
             Console.WriteLine("Il caso più frequente di casting, troncare i decimali, fpz vale " + fpz + " e con 'int pz = (int)fpz;' pz vale " + pz);
@@ -75,6 +75,50 @@
             string ilPipponeR2 = $"che ha il segno, e va da {fbMin} a {fbMax}...";
             string ilPipponeR3 = $"Mentre gli altri tipi hanno sorelle e cugini a volontà ! LoL :-)";
             Console.WriteLine($"qui si vede interpolazione dell'interpolazione \n{ilPipponeR1}\n{ilPipponeR2}\n{ilPipponeR3}\n");
+
+
+            #region multiline verbatim string literal
+
+            var stringone = $"""
+Questo è uno stringone che supporta ritorno a capo come qui
+e non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
+caratteri speciali senza necessità di escape fra le tre virgolette in cima ed in fondo (su linea separata)
+si può scrivere ed andare a capo come e dove ci pare, supporta comunque l'interpolazione, ed è il caso
+di ricordare che fra le graffe ci può essere anche un espressione od una funzione, non solo nomi di variabili, per es.
+segue l'espressione per generare una stringa di apici ripetuta 10 volte :{new string('"', 10)}   
+ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {fpz} - {pz} 
+
+""";
+
+            Console.WriteLine(stringone);
+
+            #endregion
+
+            // Verbatim literal non interpreta gli escape.
+            var path = $@"C:\\asdc\asdf";
+            // serve soprattutto per questo:
+            string query = @"SELECT foo, bar
+                            FROM table
+                            WHERE id = 42";
+            Console.WriteLine(query);
+
+            string name = "Mark";
+            var date = DateTime.Now;
+
+            Console.WriteLine("Hello, {0}! Today is {1}, it's {2:HH:mm} now.", name, date.DayOfWeek, date);
+
+            Console.WriteLine($"Hello, {name}! Today is {date.DayOfWeek}, it's {date:HH:mm} now.");
+
+            Console.WriteLine($"|{"Left",-7}|{"Right",7}|");
+
+            const int FieldWidthRightAligned = 20;
+            Console.WriteLine($"{Math.PI,20} - default formatting of the pi number");
+            Console.WriteLine($"{Math.PI,FieldWidthRightAligned:F3} - display only three decimal digits of the pi number");
+
+            // esempi per dichiarare array di stringhe o altri oggetti non numerici
+            string[] arrayDiStr = { "John", "James", "Joan", "Jamie" };
+            var arrayDiStr2 = new string[] { "testo1", "testo2", "testo3", "testo4" };
+
 
             // string ha diversi metodi, toUpper toLower Length indexing IndexOf Substring e molti altri...
             // la string è sostanzialmente un array di char e quindi può essere indicizzata com []
