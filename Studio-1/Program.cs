@@ -30,7 +30,7 @@
             // implicito   il compilatore fa da solo, un tipo piccolo in uno più grande non è un problema
             normoIntero = 1024 * 256;
             grandeIntero = normoIntero;
-            Console.WriteLine("valore di normointero è ora " + normoIntero + " e l'ho assegnato a grandeIntero che è un long \n " + 
+            Console.WriteLine("valore di normoIntero è ora " + normoIntero + " e l'ho assegnato a grandeIntero che è un long \n " + 
                 "sia l'editor che il runtime non si lamentano perché ci sta dentro");
 
             // esplicito   normalmente nelle variabili di tipo numerico quando si assegna un valore grande ad un tipo più piccolo
@@ -106,15 +106,9 @@
             int np = Int32.Parse(s1) + Int32.Parse(s2);
             Console.WriteLine(np);
 
-
-
-
-
+            // edit from mac 8 Feb 12:29
+            Console.WriteLine($"il valore di a qui ora è 7 --> {a} mentre il valore di b è 2 --> {b}");
             
-
-
-
-
 
         }
     }
