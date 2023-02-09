@@ -94,7 +94,7 @@ namespace iso6346_check
                     Console.WriteLine(e);
                 }
 
-                var chk = s % 11;
+                var chk = (s % 11) % 10;
 
                 Console.WriteLine(chk);
 
