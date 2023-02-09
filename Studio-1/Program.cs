@@ -97,9 +97,7 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
             // Verbatim literal non interpreta gli escape.
             var path = $@"C:\\asdc\asdf";
             // serve soprattutto per questo:
-            string query = @"SELECT foo, bar
-                            FROM table
-                            WHERE id = 42";
+            string query = @"SELECT foo, bar FROM table WHERE id = 42";
             Console.WriteLine(query);
 
             string name = "Mark";
@@ -155,6 +153,33 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
             Console.WriteLine($"questo perché b ha ricevuto il valore di a prima che fosse incrementato ulteriormente (a++) e mentre a veniva assegnato su b " +
                 $"quando ancora valeva 2 a++ incrementa di 1 solo dopo assumendo il valore di 3 a cui poi è stato sommato 5... totale 8");
 
+        KEYINPUTLOOP:
+
+            Console.WriteLine("Ora divertiamoci con il cursore e altri tasti...");
+
+            while (true)
+            {
+                var ch = Console.ReadKey(false).Key;
+                switch (ch)
+                {
+                    case ConsoleKey.Escape:
+                        Console.WriteLine(ch);
+                        break;
+                    case ConsoleKey.Enter:
+                        Console.Clear();
+                        Console.Write(ch);
+                        goto KEYINPUTLOOP;
+                    case ConsoleKey.UpArrow:
+                        Console.Write(ch);
+                        goto KEYINPUTLOOP;
+                    case ConsoleKey.DownArrow:
+                        Console.Write(ch);
+                        goto KEYINPUTLOOP;
+                }
+
+                Console.WriteLine("Programma terminato... bye... ");
+                break;
+            }
             
 
         }
