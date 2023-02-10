@@ -153,6 +153,12 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
             Console.WriteLine($"questo perché b ha ricevuto il valore di a prima che fosse incrementato ulteriormente (a++) e mentre a veniva assegnato su b " +
                 $"quando ancora valeva 2 a++ incrementa di 1 solo dopo assumendo il valore di 3 a cui poi è stato sommato 5... totale 8");
 
+            // comparazione < > <= >= == !=
+
+            // operatori logici  && || !    (rispettivamente and or not)
+
+
+
         KEYINPUTLOOP:
 
             Console.WriteLine("Ora divertiamoci con il cursore e altri tasti...");
