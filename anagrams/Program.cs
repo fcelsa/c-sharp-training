@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace anagrams
 { 
@@ -9,6 +12,7 @@ namespace anagrams
         const string QUIT_KEYWORD = "q";
         const string CHG_DICT_KEYWORD = "c";
         const string HELP_KEYWORD = "h";
+        const string STAT_KEYWORD = "s";
 
         static void Main(string[] args)
         {
@@ -62,6 +66,11 @@ namespace anagrams
                             case HELP_KEYWORD:
                                 PrintHelp();
                                 break;
+
+                            case STAT_KEYWORD:
+                                PrintStat();
+                                break;
+
                             default:
                                 FindAnagrams(line);
                                 break;
@@ -76,6 +85,15 @@ namespace anagrams
 
         }
 
+        private static void PrintStat()
+        {
+            Console.WriteLine($"Il dizionario selezionato contiene {ListOfParole.Count} parole uniche\n");
+            var mostLength = ListOfParole.Aggregate((max, cur) => max.Name.Length > cur.Name.Length ? max : cur);
+            var mostShortest = ListOfParole.Aggregate((min, cur) => min.Name.Length < cur.Name.Length ? min : cur);
+            Console.WriteLine($"Le parole più lunghe del dizionario sono {mostLength.Name} \n composta da {mostLength.Name.Length} caratteri.");
+            Console.WriteLine($"la parola più corta del dizionario è {mostShortest.Name} \n composta da {mostShortest.Name.Length} caratteri.");
+        }
+
         private static void PrintHelp()
         {
             Console.WriteLine("Comandi: ");
@@ -86,19 +104,21 @@ namespace anagrams
 
         private static void FindAnagrams(string parola)
         {
-
             var parolaP = Utils.GetProduct(parola);
+            var parolaE = ListOfParole.Where(p => p.Name.ToLower() == parola).ToList();
             var anagrams = ListOfParole.Where(p => p.PrimeProduct == parolaP && p.Name.ToLower() != parola).ToList();
 
             if (anagrams.Count != 0)
             {
-                Console.WriteLine($"trovate {anagrams.Count} parole");
+                if(parolaE.Count != 0) Console.WriteLine($"trovate {anagrams.Count} parole nel dizionario:");
+                if(parolaE.Count == 0) Console.WriteLine($"non esiste {parola} in questo dizionario, però è anagrammabile con queste parole:");
 
                 foreach (var anagram in anagrams) Console.WriteLine(anagram.Name);
             }
             else
             {
-                Console.WriteLine($"la parola {parola} non ha anagrammi in questo dizionario");
+                if (parolaE.Count != 0) Console.WriteLine($"la parola {parola} esiste nel dizionario ma non ha anagrammi");
+                if (parolaE.Count == 0) Console.WriteLine($"la parola {parola} non esiste e non ha angrammi nel dizionario");
             }
 
 
