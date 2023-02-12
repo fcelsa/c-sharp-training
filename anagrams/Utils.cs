@@ -1,4 +1,6 @@
-﻿namespace anagrams
+﻿using System.Security.Cryptography;
+
+namespace anagrams
 {
     internal class Utils
     {
@@ -44,5 +46,38 @@
             _ => 1,
         };
 
+
+        public static UInt128 GetSecureRandomPWord(int lenWord)
+        {
+            UInt128 rndPWord = 1;
+            int rnd = 0;
+            for (int i = 1; i <= lenWord; i++)
+            {
+                do
+                {
+                  rnd = RandomNumberGenerator.GetInt32(2, 101);
+                } 
+                while (!IsPrime(rnd));
+
+
+                rndPWord *= (UInt128)rnd;
+            }
+            
+            return rndPWord;
+        }
+
+        public static bool IsPrime(int number)
+        {
+            if (number < 2) return false;
+            if (number % 2 == 0) return (number == 2);
+            int root = (int)Math.Sqrt((double)number);
+            for (int i = 3; i <= root; i += 2)
+            {
+                if (number % i == 0) return false;
+            }
+            return true;
+        }
+
     }
+
 }

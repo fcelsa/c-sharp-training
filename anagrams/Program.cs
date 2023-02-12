@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -13,6 +14,7 @@ namespace anagrams
         const string CHG_DICT_KEYWORD = "c";
         const string HELP_KEYWORD = "h";
         const string STAT_KEYWORD = "s";
+        const string GAME_KEYWORD = "g";
 
         static void Main(string[] args)
         {
@@ -71,6 +73,10 @@ namespace anagrams
                                 PrintStat();
                                 break;
 
+                            case GAME_KEYWORD:
+                                WordGame();
+                                break;
+
                             default:
                                 FindAnagrams(line);
                                 break;
@@ -82,6 +88,86 @@ namespace anagrams
                 }
             }
 
+
+        }
+
+        private static void WordGame()
+        {
+            int lenOfWordVal = 5; // default per lunghezza parola
+            string lenOfWordUserInput = "";
+            string parolaDaIndovinare = string.Empty;
+
+            Console.WriteLine("Digita la lunghezza della parola che vuoi indovinare:\n");
+            do
+            {
+                string? s = Console.ReadLine();
+                lenOfWordUserInput = s;
+            } while (!(int.TryParse(lenOfWordUserInput, out lenOfWordVal) && lenOfWordVal >= 3 && lenOfWordVal <= 12));
+
+            string promptParola = new('-', lenOfWordVal);
+
+            bool parolaFound = false;
+            do
+            {
+                UInt128 paroleGuessP = Utils.GetSecureRandomPWord(lenOfWordVal);
+                var paroleGuess = ListOfParole.Where(p => p.PrimeProduct == paroleGuessP).ToList();
+                
+                if(paroleGuess.Count != 0)
+                {
+                    parolaFound= true;
+                    //Console.WriteLine($"random generato: {paroleGuessP}  parole corrispondenti:");
+                    //foreach (var parolaGuess in paroleGuess) Console.WriteLine(parolaGuess.Name);
+                    if (paroleGuess.Count > 1)
+                    {
+                        int rnd = new Random().Next(0, paroleGuess.Count);
+                        parolaDaIndovinare = paroleGuess[rnd].Name;
+                    }
+                    else
+                    {
+                        parolaDaIndovinare = paroleGuess[0].Name;
+                    }
+                }
+
+            } while (!parolaFound);
+
+            //Console.WriteLine(promptParola);
+            //Console.WriteLine(parolaDaIndovinare);
+
+            int t = 1;
+            string suggest = "";
+
+            do 
+            {
+                Console.WriteLine($"Tentativo {t} --> parole esistenti in posizione errata: {suggest}");
+                suggest = "";
+                string? s = Console.ReadLine();
+                if(s != parolaDaIndovinare)
+                {
+                    for (int i = 0; i <= parolaDaIndovinare.Length - 1; i++) {
+                        if (char.ToLower(parolaDaIndovinare[i]) == char.ToLower(s[i]))
+                        {
+                            char[] ch = promptParola.ToCharArray();
+                            ch[i] = s[i];
+                            promptParola = new string(ch);
+                        }
+                        else if (parolaDaIndovinare.Contains(s[i]))
+                        {
+                            suggest += s[i].ToString();
+                        }
+                    }
+
+                    Console.WriteLine(promptParola);
+                }
+                else if(s == parolaDaIndovinare)
+                {
+                    promptParola = s;
+                }
+                
+                t++;
+
+            } while (!(promptParola == parolaDaIndovinare));
+
+            Console.WriteLine($"Bravo! ha indovinato {promptParola} al tentativo {--t}");
 
         }
 
@@ -100,6 +186,7 @@ namespace anagrams
             Console.WriteLine("c = cambia dizionario");
             Console.WriteLine("q = quit");
             Console.WriteLine("s = statistiche dizionario");
+            Console.WriteLine("g = gioca");
         }
 
         private static void FindAnagrams(string parola)

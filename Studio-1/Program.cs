@@ -1,7 +1,14 @@
-﻿namespace Studio_1
+﻿using System.Security.Cryptography;
+
+namespace Studio_1
 {
     internal class Program
     {
+        public static double GetSecureRandom(int min, int max)
+        {
+            double rnd = RandomNumberGenerator.GetInt32(min, max);
+            return rnd;
+        }
         static void Main(string[] args)
         {
             // tipi di dati principali
@@ -174,6 +181,8 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
                     case ConsoleKey.Enter:
                         Console.Clear();
                         Console.Write(ch);
+                        double mioRandom = GetSecureRandom(10,20);
+                        Console.WriteLine(mioRandom);
                         goto KEYINPUTLOOP;
                     case ConsoleKey.UpArrow:
                         Console.Write(ch);
