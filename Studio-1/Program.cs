@@ -165,6 +165,15 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
             // operatori logici  && || !    (rispettivamente and or not)
 
 
+            // esempio operatore ternario (un modo alternativo e compatto, in alcuni casi per eliminare if else)
+            string scelta;
+            scelta = np > 256 ? "la fessa di sorita" : "la fessa di mameta";
+            Console.WriteLine(scelta);
+            
+            // possono anche essere nidifcate:
+            // condizione ? caso1 : (condizione ? : caso1 : casi2)
+
+
 
         KEYINPUTLOOP:
 
