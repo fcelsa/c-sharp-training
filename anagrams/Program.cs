@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.Security;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using static System.Net.Mime.MediaTypeNames;
@@ -30,6 +31,8 @@ namespace anagrams
             }
 
         START_FILE_REQUEST:
+            
+            CliDesign.PrepareScreen();
 
             while (!LoadDictionary(filePath))
             {
@@ -48,13 +51,13 @@ namespace anagrams
             {
                 while (true)
                 {
+                    //Console.SetCursorPosition(0, 4);
                     Console.WriteLine("Inserisci una parola da anagrammare od un comando (h per help)");
                     var line = Console.ReadLine();
                     if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line))
                     {
                         line = line.ToLower();
                         var performance = Stopwatch.GetTimestamp();
-
 
                         switch (line)
                         {
@@ -93,7 +96,8 @@ namespace anagrams
 
         private static void WordGame()
         {
-            int lenOfWordVal = 5; // default per lunghezza parola
+            CliDesign.PrepareScreen();
+            int lenOfWordVal = 5; // default per lunghezza parola ? TODO non usa per ora
             string lenOfWordUserInput = "";
             string parolaDaIndovinare = string.Empty;
 
@@ -135,28 +139,45 @@ namespace anagrams
 
             int t = 1;
             string suggest = "";
+            string descSuggest = "";
+
+            var w1 = new ScreenTimer();
+            ThreadStart s1 = w1.Count;
+            var thread1 = new Thread(s1);
+            thread1.Start();
+            var gameTimer = Stopwatch.GetTimestamp();
 
             do 
             {
-                Console.WriteLine($"Tentativo {t} --> parole esistenti in posizione errata: {suggest}");
+                if (suggest.Length > 0) descSuggest = "--> parole giuste nella posizione errata:"; else descSuggest = "";
+                Console.WriteLine($"Tentativo {t} {descSuggest}  {suggest}");
                 suggest = "";
                 string? s = Console.ReadLine();
+
+                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length)
+                {
+                    s = Console.ReadLine();
+                }
+
                 if(s != parolaDaIndovinare)
                 {
-                    for (int i = 0; i <= parolaDaIndovinare.Length - 1; i++) {
+                    for (int i = 0; i <= parolaDaIndovinare.Length - 1; i++) 
+                    {
+                        char[] chpP = promptParola.ToCharArray();
                         if (char.ToLower(parolaDaIndovinare[i]) == char.ToLower(s[i]))
                         {
-                            char[] ch = promptParola.ToCharArray();
-                            ch[i] = s[i];
-                            promptParola = new string(ch);
+                            chpP[i] = s[i];
+                            promptParola = new string(chpP);
                         }
-                        else if (parolaDaIndovinare.Contains(s[i]))
+                        
+                        if (parolaDaIndovinare.Contains(s[i]) && s[i] != chpP[i])
                         {
-                            suggest += s[i].ToString();
+                            suggest += s[i];
                         }
                     }
-
+                    
                     Console.WriteLine(promptParola);
+
                 }
                 else if(s == parolaDaIndovinare)
                 {
@@ -167,12 +188,39 @@ namespace anagrams
 
             } while (!(promptParola == parolaDaIndovinare));
 
-            Console.WriteLine($"Bravo! ha indovinato {promptParola} al tentativo {--t}");
+            int mm = (int)Stopwatch.GetElapsedTime(gameTimer).TotalMinutes;
+            int ss = (int)Stopwatch.GetElapsedTime(gameTimer).TotalSeconds;
+
+            Console.WriteLine($"Bravo! hai indovinato {promptParola} al tentativo {--t} impiegando {mm} minuti e {ss} secondi");
+            Console.WriteLine($"\n\n[d] definisci {parolaDaIndovinare}  [q] ritorna all'inizio");
+            
+            string? ws = Console.ReadLine();
+            while (string.IsNullOrEmpty(ws) )
+            {
+                ws = Console.ReadLine();
+            }
+            if(ws == "q")
+            {
+                thread1.Interrupt();
+                CliDesign.PrepareScreen();
+                return;
+            }
+            if (ws == "d")
+            {
+                thread1.Interrupt();
+                CliDesign.PrepareScreen();
+                Console.WriteLine($"Definizione di {parolaDaIndovinare} \n");
+                Console.WriteLine(Utils.GetDefinitionFromDict(parolaDaIndovinare));
+                return;
+            }
+
+
 
         }
 
         private static void PrintStat()
         {
+            CliDesign.PrepareScreen();
             Console.WriteLine($"Il dizionario selezionato contiene {ListOfParole.Count} parole uniche\n");
             var mostLength = ListOfParole.Aggregate((max, cur) => max.Name.Length > cur.Name.Length ? max : cur);
             var mostShortest = ListOfParole.Aggregate((min, cur) => min.Name.Length < cur.Name.Length ? min : cur);
@@ -182,6 +230,7 @@ namespace anagrams
 
         private static void PrintHelp()
         {
+            CliDesign.PrepareScreen();
             Console.WriteLine("Comandi: ");
             Console.WriteLine("c = cambia dizionario");
             Console.WriteLine("q = quit");
@@ -264,5 +313,39 @@ namespace anagrams
 
         }
 
+        public class ScreenTimer
+        {
+            public void Count()
+            {
+                while(true)
+                {
+                    try
+                    {
+                        Thread.Sleep(1000);
+                        var originalX = Console.CursorLeft;
+                        var originalY = Console.CursorTop;
+                        Console.SetCursorPosition(0, 1);
+                        Console.Write(new string(' ', Console.WindowWidth));
+                        Console.SetCursorPosition((Console.WindowWidth - 8) / 2, 0);
+                        Console.Write("{0:HH:mm:ss}   time elapsed: todo ", DateTime.Now);
+                        Console.SetCursorPosition(Console.WindowWidth - 8, 0);
+                        //Console.Write(countTimer);
+                        Console.SetCursorPosition(originalX, originalY);
+                    }
+                    catch (ThreadInterruptedException)
+                    {
+                        break;
+                    }
+                }
+
+
+            }
+
+
+        }
+
+
     }
+
+
 }
