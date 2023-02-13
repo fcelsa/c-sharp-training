@@ -141,10 +141,6 @@ namespace anagrams
             string suggest = "";
             string descSuggest = "";
 
-            var w1 = new UtilsThread();
-            ThreadStart s1 = w1.ScreenClock;
-            var thread1 = new Thread(s1);
-            thread1.Start();
             var gameTimer = Stopwatch.GetTimestamp();
 
             do 
@@ -201,13 +197,11 @@ namespace anagrams
             }
             if(ws == "q")
             {
-                thread1.Interrupt();
                 CliDesign.PrepareScreen();
                 return;
             }
             if (ws == "d")
             {
-                thread1.Interrupt();
                 CliDesign.PrepareScreen();
                 Console.WriteLine($"Definizione di {parolaDaIndovinare} \n");
                 Console.WriteLine(Utils.GetDefinitionFromDict(parolaDaIndovinare));
