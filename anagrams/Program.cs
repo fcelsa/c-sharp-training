@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace anagrams
-{ 
+{
     public class Program
     {
         static List<Word> ListOfParole { get; set; } = new();
@@ -123,7 +123,7 @@ namespace anagrams
                     //foreach (var parolaGuess in paroleGuess) Console.WriteLine(parolaGuess.Name);
                     if (paroleGuess.Count > 1)
                     {
-                        int rnd = new Random().Next(0, paroleGuess.Count);
+                        int rnd = Random.Shared.Next(0, paroleGuess.Count);
                         parolaDaIndovinare = paroleGuess[rnd].Name;
                     }
                     else
@@ -141,8 +141,8 @@ namespace anagrams
             string suggest = "";
             string descSuggest = "";
 
-            var w1 = new ScreenTimer();
-            ThreadStart s1 = w1.Count;
+            var w1 = new UtilsThread();
+            ThreadStart s1 = w1.ScreenClock;
             var thread1 = new Thread(s1);
             thread1.Start();
             var gameTimer = Stopwatch.GetTimestamp();
@@ -189,7 +189,7 @@ namespace anagrams
             } while (!(promptParola == parolaDaIndovinare));
 
             int mm = (int)Stopwatch.GetElapsedTime(gameTimer).TotalMinutes;
-            int ss = (int)Stopwatch.GetElapsedTime(gameTimer).TotalSeconds;
+            int ss = (int)Stopwatch.GetElapsedTime(gameTimer).Seconds;
 
             Console.WriteLine($"Bravo! hai indovinato {promptParola} al tentativo {--t} impiegando {mm} minuti e {ss} secondi");
             Console.WriteLine($"\n\n[d] definisci {parolaDaIndovinare}  [q] ritorna all'inizio");
@@ -310,37 +310,6 @@ namespace anagrams
             {
                 return filePath;
             }
-
-        }
-
-        public class ScreenTimer
-        {
-            public void Count()
-            {
-                while(true)
-                {
-                    try
-                    {
-                        Thread.Sleep(1000);
-                        var originalX = Console.CursorLeft;
-                        var originalY = Console.CursorTop;
-                        Console.SetCursorPosition(0, 1);
-                        Console.Write(new string(' ', Console.WindowWidth));
-                        Console.SetCursorPosition((Console.WindowWidth - 8) / 2, 0);
-                        Console.Write("{0:HH:mm:ss}   time elapsed: todo ", DateTime.Now);
-                        Console.SetCursorPosition(Console.WindowWidth - 8, 0);
-                        //Console.Write(countTimer);
-                        Console.SetCursorPosition(originalX, originalY);
-                    }
-                    catch (ThreadInterruptedException)
-                    {
-                        break;
-                    }
-                }
-
-
-            }
-
 
         }
 
