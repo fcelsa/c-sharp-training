@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace anagrams
 {
-    internal class CliDesign
+    public static class CliDesign
     {
+        static readonly Thread thread1 = new(UtilsThread.ScreenClock);
         public static void PrepareScreen()
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
@@ -19,17 +20,14 @@ namespace anagrams
             //
 
             //orologio (e timer?) ...ma controllare che il thread non sia già in esecuzione
-            //var w1 = new UtilsThread();
-            //ThreadStart s1 = w1.ScreenClock;
-            //var thread1 = new Thread(s1);
-            //thread1.Start();
-
+            thread1.Start();
         }
 
         public static void ShowScreen()
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.Clear();
         }
         public static void ResetScreen()
         {
@@ -38,7 +36,7 @@ namespace anagrams
             Console.Clear();
 
             // terminazione dei thread attivati.
-            // thread1.Interrupt();
+            thread1.Interrupt();
             
         }
 

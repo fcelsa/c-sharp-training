@@ -96,7 +96,7 @@ namespace anagrams
 
         private static void WordGame()
         {
-            CliDesign.PrepareScreen();
+            CliDesign.ShowScreen();
             int lenOfWordVal = 5; // default per lunghezza parola ? TODO non usa per ora
             string lenOfWordUserInput = "";
             string parolaDaIndovinare = string.Empty;
@@ -197,12 +197,12 @@ namespace anagrams
             }
             if(ws == "q")
             {
-                CliDesign.PrepareScreen();
+                CliDesign.ShowScreen();
                 return;
             }
             if (ws == "d")
             {
-                CliDesign.PrepareScreen();
+                CliDesign.ShowScreen();
                 Console.WriteLine($"Definizione di {parolaDaIndovinare} \n");
                 Console.WriteLine(Utils.GetDefinitionFromDict(parolaDaIndovinare));
                 return;
@@ -214,7 +214,7 @@ namespace anagrams
 
         private static void PrintStat()
         {
-            CliDesign.PrepareScreen();
+            CliDesign.ShowScreen();
             Console.WriteLine($"Il dizionario selezionato contiene {ListOfParole.Count} parole uniche\n");
             var mostLength = ListOfParole.Aggregate((max, cur) => max.Name.Length > cur.Name.Length ? max : cur);
             var mostShortest = ListOfParole.Aggregate((min, cur) => min.Name.Length < cur.Name.Length ? min : cur);
@@ -224,7 +224,7 @@ namespace anagrams
 
         private static void PrintHelp()
         {
-            CliDesign.PrepareScreen();
+            CliDesign.ShowScreen();
             Console.WriteLine("Comandi: ");
             Console.WriteLine("c = cambia dizionario");
             Console.WriteLine("q = quit");
