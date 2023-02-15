@@ -169,11 +169,16 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
             string scelta;
             scelta = np > 256 ? "la fessa di sorita" : "la fessa di mameta";
             Console.WriteLine(scelta);
-            
+
             // possono anche essere nidifcate:
             // condizione ? caso1 : (condizione ? : caso1 : casi2)
 
+            scelta = np % 2 != 0 ? "dispari" : (np > 256 ? "pari maggiore di 256" : "pari miniore di 256");
+            Console.WriteLine(scelta);
 
+
+
+            Console.SetWindowSize(20, 80);
 
         KEYINPUTLOOP:
 
@@ -199,6 +204,10 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
                     case ConsoleKey.DownArrow:
                         Console.Write(ch);
                         goto KEYINPUTLOOP;
+                    default: 
+                        Console.WriteLine(ch);
+                        goto KEYINPUTLOOP;
+
                 }
 
                 Console.WriteLine("Programma terminato... bye... ");
