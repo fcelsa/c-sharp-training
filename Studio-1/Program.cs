@@ -177,9 +177,6 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
             Console.WriteLine(scelta);
 
 
-
-            Console.SetWindowSize(20, 80);
-
         KEYINPUTLOOP:
 
             Console.WriteLine("Ora divertiamoci con il cursore e altri tasti...");
@@ -213,7 +210,44 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
                 Console.WriteLine("Programma terminato... bye... ");
                 break;
             }
-            
+
+
+            // cicli iterativi for e foreach
+
+            int length = 255;
+            for (int i = 0; i < length; i++)
+            {
+                Console.Write($"# {i} ");
+            }
+
+            string[] imprecazioni = { "maremma m...", "maremma i...", "maremma l...", "maremma lu...", "maremma a...", "...orcodd..."};
+            foreach (string imprecazione in imprecazioni)
+            {
+                Console.WriteLine(imprecazione);
+            }
+
+            // break e continue si usano insieme agli if nidificati nei cicli per interrompere o saltare ad una condizione
+
+            foreach (string imprecazione in imprecazioni)
+            {
+                int test = imprecazione.IndexOf("l");
+                if (test != -1) continue;
+                
+                Console.WriteLine(imprecazione);
+                
+            }
+
+            foreach (string imprecazione in imprecazioni)
+            {
+                int test = imprecazione.IndexOf("i");
+                if (test != -1) break;
+
+                Console.WriteLine(imprecazione);
+
+            }
+
+
+
 
         }
     }
