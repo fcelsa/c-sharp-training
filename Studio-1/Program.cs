@@ -12,40 +12,88 @@ namespace Studio_1
         static void Main(string[] args)
         {
 
+            // Prevent example from ending if CTL+C is pressed.
+            Console.TreatControlCAsInput = true;
+
             var menu = new MakeScreenMenu(new string[] { 
                 "Tipi di dati e casting", 
                 "Stringhe e Char", 
-                "Condizioni if e operatori ternari", 
+                "Blocchi condizionali if ",
+                "Operatori ternari",
                 "Cicli for e foreach", 
-                "Costrutti particolari", 
-                "Il cazzo che te freca" 
+                "Cicli while e do while", 
+                "Switch case",
+                "Uscire dai cicli: break e continue",
+                "Gestire le eccezioni, try catch",
+                "Gestire input utente",
+                "Gli argomenti di riga di comando",
+                "Interagire con il sistema operativo",
+                "Leggere e scrivere i file",
+                "Funzioni di accesso ai dati remoti",
+                "Database ed SQL"
             });
 
 
             var menuPainter = new ConsoleMenuPainter(menu);
 
             bool done = false;
-            Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            // ovviamente questa progressbar è finta... 
+            Console.Write("Performing some task... ...solo per finta ...");
+            using (var progress = new ProgressBar())
+            {
+                for (int i = 0; i <= 100; i++)
+                {
+                    progress.Report((double)i / 100);
+                    Thread.Sleep(20);
+                }
+            }
+            Console.WriteLine("Done.");
+
             Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            Console.BackgroundColor = ConsoleColor.Blue;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            int maxW = Console.WindowWidth;
+            string intestaTitolo = "Corso di apprendimento C#  Studio-1";
+            string padding = new string(' ', (maxW - intestaTitolo.Length) / 2);
+            Console.Write(padding + intestaTitolo + padding);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.Gray;
+            
+            
+            Console.CursorVisible= false;
             
 
             do
             {
                 menuPainter.Paint(3, 2);
 
-                var keyInfo = Console.ReadKey();
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);  //overload che disabilità l'echo dei caratteri
+
+                if (keyInfo.Modifiers == ConsoleModifiers.Control && keyInfo.Key == ConsoleKey.C)
+                {
+                    var cp = Console.GetCursorPosition();
+                    Console.WriteLine(cp + " ---> " + keyInfo.Modifiers);
+                    continue;
+                }
+                    
 
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.UpArrow: menu.MoveUp(); break;
                     case ConsoleKey.DownArrow: menu.MoveDown(); break;
                     case ConsoleKey.Enter: done = true; break;
+                    case ConsoleKey.Escape: done = false; return;
                 }
             }
             while (!done);
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Hai selezionato: " + (menu.SelectedOption ?? "(nulla)"));
+            Console.CursorVisible = true;
             Console.ReadKey();
 
 

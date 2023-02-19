@@ -16,7 +16,7 @@ namespace Studio_1
 
         public IReadOnlyList<string> Items { get; }
 
-        public int SelectedIndex { get; private set; } = -1; // nothing selected
+        public int SelectedIndex { get; private set; } = 0;  // -1 nothing selected  0 = 1st selected
 
         public string SelectedOption => SelectedIndex != -1 ? Items[SelectedIndex] : null;
 
@@ -44,7 +44,7 @@ namespace Studio_1
             {
                 Console.SetCursorPosition(x, y + i);
 
-                var color = menu.SelectedIndex == i ? ConsoleColor.Yellow : ConsoleColor.Black;
+                var color = menu.SelectedIndex == i ? ConsoleColor.Yellow : ConsoleColor.Cyan;
 
                 Console.ForegroundColor = color;
                 Console.WriteLine(menu.Items[i]);
