@@ -11,6 +11,44 @@ namespace Studio_1
         }
         static void Main(string[] args)
         {
+
+            var menu = new MakeScreenMenu(new string[] { 
+                "Tipi di dati e casting", 
+                "Stringhe e Char", 
+                "Condizioni if e operatori ternari", 
+                "Cicli for e foreach", 
+                "Costrutti particolari", 
+                "Il cazzo che te freca" 
+            });
+
+
+            var menuPainter = new ConsoleMenuPainter(menu);
+
+            bool done = false;
+            Console.BackgroundColor = ConsoleColor.DarkGray;
+            Console.Clear();
+            
+
+            do
+            {
+                menuPainter.Paint(3, 2);
+
+                var keyInfo = Console.ReadKey();
+
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.UpArrow: menu.MoveUp(); break;
+                    case ConsoleKey.DownArrow: menu.MoveDown(); break;
+                    case ConsoleKey.Enter: done = true; break;
+                }
+            }
+            while (!done);
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Hai selezionato: " + (menu.SelectedOption ?? "(nulla)"));
+            Console.ReadKey();
+
+
             // tipi di dati principali
 
             bool bugiardo = true;
@@ -54,11 +92,16 @@ namespace Studio_1
             // anche perché metodi di conversione sbagliati potrebbero sollevare un eccezione come qui sotto
             //int i2 = int.MaxValue;
             //short s2 = Convert.ToInt16(i2);
-
             int i3 = 122;
             double d3 = 112.52;
             string stringa = Convert.ToString(i3) + " " + Convert.ToString(d3);
             Console.WriteLine(stringa);
+
+            // rappresentazione di numeri grandi nel codice
+            // dalla versione ? c# 7? 8?  nel codice i numeri grandi possono essere rappresentati con il separatore di migliaia rappresentato da _ (underscore)
+            Console.WriteLine(1_000_000_000);
+            UInt64 numeroneNumerello = 10_500_000_000_000;
+            Console.WriteLine(numeroneNumerello);
 
 
             // stringhe
@@ -83,6 +126,13 @@ namespace Studio_1
             string ilPipponeR3 = $"Mentre gli altri tipi hanno sorelle e cugini a volontà ! LoL :-)";
             Console.WriteLine($"qui si vede interpolazione dell'interpolazione \n{ilPipponeR1}\n{ilPipponeR2}\n{ilPipponeR3}\n");
 
+            // Char ... un discorso sul tipo Char
+
+            
+            Console.WriteLine(@"Possiamo utilizzare la codifica utf16 per i caratteri con il codice \uXXXX");
+            Console.WriteLine('\u0041' + '\u0126');
+
+
 
             #region multiline verbatim string literal
 
@@ -101,7 +151,7 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
 
             #endregion
 
-            // Verbatim literal non interpreta gli escape.
+            // Verbatim literal $@ non interpreta gli escape.
             var path = $@"C:\\asdc\asdf";
             // serve soprattutto per questo:
             string query = @"SELECT foo, bar FROM table WHERE id = 42";
