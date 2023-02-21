@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.X86;
+using System.Security.Cryptography;
 
 namespace Studio_1
 {
@@ -9,28 +11,78 @@ namespace Studio_1
             double rnd = RandomNumberGenerator.GetInt32(min, max);
             return rnd;
         }
+
+        internal static string DescCapitoli(byte descIdx)
+        {
+            var stringone = "";
+
+            switch (descIdx)
+            {
+                case 0:
+                    stringone = 
+$"""
+Questo è uno stringone che supporta ritorno a capo come qui
+e non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
+caratteri speciali senza necessità di escape fra le tre virgolette in cima ed in fondo (su linea separata)
+si può scrivere ed andare a capo come e dove ci pare, supporta comunque l'interpolazione, ed è il caso
+di ricordare che fra le graffe ci può essere anche un espressione od una funzione, non solo nomi di variabili, per es.
+segue l'espressione per generare una stringa di apici ripetuta 10 volte :
+            {new string('"', 10)}   
+""";
+                    break;
+
+                case 1:
+                    stringone = 
+$"""
+stringone del cazzo
+che occupa poco schermo per vedere
+uno stringone vero, seleziona la prima opzione.
+""";
+                    break; 
+
+                case 2:
+                    stringone = 
+$"""
+stringone della minchia... 
+attenzione, qui si va a capo senza escapare i \n 
+""";
+
+                     break;
+
+
+
+                default:
+                    stringone = @"sono lo stringone di default... ";
+                    break;
+            }
+
+            return stringone;
+        }
+
         static void Main(string[] args)
         {
 
-            // Prevent example from ending if CTL+C is pressed.
+            // Prevent ending with CTL+C .
             Console.TreatControlCAsInput = true;
 
             var menu = new MakeScreenMenu(new string[] { 
-                "Tipi di dati e casting", 
-                "Stringhe e Char", 
-                "Blocchi condizionali if ",
-                "Operatori ternari",
-                "Cicli for e foreach", 
-                "Cicli while e do while", 
-                "Switch case",
+                "Introduzione                      ",
+                "Tipi di dati e casting            ", 
+                "Stringhe e Char                   ", 
+                "Blocchi condizionali if           ",
+                "Operatori ternari                 ",
+                "Cicli for, foreach, do, while     ", 
+                "Switch case statements            ",
                 "Uscire dai cicli: break e continue",
-                "Gestire le eccezioni, try catch",
-                "Gestire input utente",
-                "Gli argomenti di riga di comando",
-                "Interagire con il sistema operativo",
-                "Leggere e scrivere i file",
-                "Funzioni di accesso ai dati remoti",
-                "Database ed SQL"
+                "Gestire le eccezioni, try catch   ",
+                "Gestire input utente              ",
+                "Gli argomenti in riga di comando  ",
+                "Metodi e method overloading       ",
+                "Array e collection                ",
+                "Interagire con il S.O.            ",
+                "Leggere e scrivere i file         ",
+                "Accesso a dati remoti             ",
+                "Database ed SQL                   "
             });
 
 
@@ -52,6 +104,10 @@ namespace Studio_1
             }
             Console.WriteLine("Done.");
 
+
+        MAIN_INPUT_CYCLE:
+
+            done = false;
             Console.Clear();
             Console.SetCursorPosition(0, 0);
             Console.BackgroundColor = ConsoleColor.Blue;
@@ -63,15 +119,12 @@ namespace Studio_1
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Gray;
             
-            
             Console.CursorVisible= false;
             
-
             do
             {
-                menuPainter.Paint(3, 2);
-
-                ConsoleKeyInfo keyInfo = Console.ReadKey(true);  //overload che disabilità l'echo dei caratteri
+                menuPainter.Paint(1, 2);
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);  //l'unico overload di ReadKey e che serve a disabilitare l'echo dei caratteri
 
                 if (keyInfo.Modifiers == ConsoleModifiers.Control && keyInfo.Key == ConsoleKey.C)
                 {
@@ -80,21 +133,34 @@ namespace Studio_1
                     continue;
                 }
                     
-
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.UpArrow: menu.MoveUp(); break;
                     case ConsoleKey.DownArrow: menu.MoveDown(); break;
                     case ConsoleKey.Enter: done = true; break;
-                    case ConsoleKey.Escape: done = false; return;
+                    case ConsoleKey.Escape: return;
                 }
             }
             while (!done);
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Hai selezionato: " + (menu.SelectedOption ?? "(nulla)"));
-            Console.CursorVisible = true;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.SetCursorPosition(36, 2 + menu.SelectedIndex);
+            Console.Write("--->");
+            for (int i = 2; i <= 20; i++)
+            {
+                Console.SetCursorPosition(40, i);
+                Console.Write("|");
+            }
+            Console.ForegroundColor = ConsoleColor.Gray;
+            var scrivo = DescCapitoli((byte)menu.SelectedIndex);
+            Console.SetCursorPosition(41, 2);
+            Console.Write(scrivo);
+
             Console.ReadKey();
+            if (done) goto MAIN_INPUT_CYCLE;
+
+            Console.CursorVisible = true;
+            
 
 
             // tipi di dati principali
