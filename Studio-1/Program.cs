@@ -6,59 +6,6 @@ namespace Studio_1
 {
     internal class Program
     {
-        public static double GetSecureRandom(int min, int max)
-        {
-            double rnd = RandomNumberGenerator.GetInt32(min, max);
-            return rnd;
-        }
-
-        internal static string DescCapitoli(byte descIdx)
-        {
-            var stringone = "";
-
-            switch (descIdx)
-            {
-                case 0:
-                    stringone = 
-$"""
-Questo è uno stringone che supporta ritorno a capo come qui
-e non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
-caratteri speciali senza necessità di escape fra le tre virgolette in cima ed in fondo (su linea separata)
-si può scrivere ed andare a capo come e dove ci pare, supporta comunque l'interpolazione, ed è il caso
-di ricordare che fra le graffe ci può essere anche un espressione od una funzione, non solo nomi di variabili, per es.
-segue l'espressione per generare una stringa di apici ripetuta 10 volte :
-            {new string('"', 10)}   
-""";
-                    break;
-
-                case 1:
-                    stringone = 
-$"""
-stringone del cazzo
-che occupa poco schermo per vedere
-uno stringone vero, seleziona la prima opzione.
-""";
-                    break; 
-
-                case 2:
-                    stringone = 
-$"""
-stringone della minchia... 
-attenzione, qui si va a capo senza escapare i \n 
-""";
-
-                     break;
-
-
-
-                default:
-                    stringone = @"sono lo stringone di default... ";
-                    break;
-            }
-
-            return stringone;
-        }
-
         static void Main(string[] args)
         {
 
@@ -66,25 +13,32 @@ attenzione, qui si va a capo senza escapare i \n
             Console.TreatControlCAsInput = true;
 
             var menu = new MakeScreenMenu(new string[] { 
-                "Introduzione                      ",
-                "Tipi di dati e casting            ", 
-                "Stringhe e Char                   ", 
-                "Blocchi condizionali if           ",
-                "Operatori ternari                 ",
-                "Cicli for, foreach, do, while     ", 
-                "Switch case statements            ",
-                "Uscire dai cicli: break e continue",
-                "Gestire le eccezioni, try catch   ",
-                "Gestire input utente              ",
-                "Gli argomenti in riga di comando  ",
-                "Metodi e method overloading       ",
-                "Array e collection                ",
-                "Interagire con il S.O.            ",
-                "Leggere e scrivere i file         ",
-                "Accesso a dati remoti             ",
-                "Database ed SQL                   "
+                "Introduzione                   ",
+                "Tipi di dati e casting         ", 
+                "Stringhe e Char                ", 
+                "Blocchi condizionali if        ",
+                "Operatori ternari              ",
+                "Cicli for, foreach, do, while  ", 
+                "Switch case statements         ",
+                "...e uscirne: break e continue ",
+                "Le eccezioni con try catch     ",
+                "Gestire input utente           ",
+                "Argomenti in riga di comando   ",
+                "Metodi e method overloading    ",
+                "Array e collection             ",
+                "Interagire con il S.O.         ",
+                "Leggere e scrivere i file      ",
+                "Accesso a dati remoti          ",
+                "Database ed SQL                ",
+                "Item 17                        ",
+                "Item 18                        ",
+                "Item 19                        ",
+                "Item 20                        ",
+                "Item 21                        ",
+                "Item 22                        ",
+                "Item 23                        ",
+                "Item 24                        "
             });
-
 
             var menuPainter = new ConsoleMenuPainter(menu);
 
@@ -126,13 +80,13 @@ attenzione, qui si va a capo senza escapare i \n
                 menuPainter.Paint(1, 2);
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);  //l'unico overload di ReadKey e che serve a disabilitare l'echo dei caratteri
 
-                if (keyInfo.Modifiers == ConsoleModifiers.Control && keyInfo.Key == ConsoleKey.C)
+                if (keyInfo.Modifiers == ConsoleModifiers.Control && (keyInfo.Key == ConsoleKey.C || keyInfo.Key == ConsoleKey.E ))
                 {
                     var cp = Console.GetCursorPosition();
-                    Console.WriteLine(cp + " ---> " + keyInfo.Modifiers);
+                    Console.WriteLine(cp + " ---> " + keyInfo.Modifiers + "  selected index ---> " + menu.SelectedIndex);
                     continue;
                 }
-                    
+
                 switch (keyInfo.Key)
                 {
                     case ConsoleKey.UpArrow: menu.MoveUp(); break;
@@ -144,18 +98,22 @@ attenzione, qui si va a capo senza escapare i \n
             while (!done);
 
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetCursorPosition(36, 2 + menu.SelectedIndex);
-            Console.Write("--->");
-            for (int i = 2; i <= 20; i++)
+            Console.SetCursorPosition(32, 2 + menu.SelectedIndex);
+            Console.Write("-->");
+            for (int i = 2; i <= 26; i++)
             {
-                Console.SetCursorPosition(40, i);
+                Console.SetCursorPosition(36, i);
                 Console.Write("|");
             }
             Console.ForegroundColor = ConsoleColor.Gray;
-            var scrivo = DescCapitoli((byte)menu.SelectedIndex);
-            Console.SetCursorPosition(41, 2);
-            Console.Write(scrivo);
-
+            Console.SetCursorPosition(38, 2);
+            var scrivo = menuPainter.DescMenuItem((sbyte)menu.SelectedIndex);
+            for (int i = 0; i < scrivo.Length; i++)
+            {
+                Console.SetCursorPosition(38, i + 2);
+                Console.Write(scrivo[i]);
+            }
+           
             Console.ReadKey();
             if (done) goto MAIN_INPUT_CYCLE;
 
@@ -356,7 +314,7 @@ ora di seguito metto il risultato di fbMax: {fbMax} e proseguo con fpz ed pz: {f
                     case ConsoleKey.Enter:
                         Console.Clear();
                         Console.Write(ch);
-                        double mioRandom = GetSecureRandom(10,20);
+                        double mioRandom = RandomNumberGenerator.GetInt32(10,20);
                         Console.WriteLine(mioRandom);
                         goto KEYINPUTLOOP;
                     case ConsoleKey.UpArrow:
