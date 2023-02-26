@@ -8,8 +8,8 @@ namespace Studio_1
 {
     internal class PlayArray
     {
-        // due modi di definire gli array, PlayA e PlayB + modifica + iterazione
-        public string PlayA(int scelta)
+        // due modi di definire gli array, modifica + iterazione
+        public static string PlayA(int scelta)
         {
             string[] imprecazioni = { "maremma m.", "maremma p.", "maremma c.", "maremma g." };
 
@@ -19,7 +19,7 @@ namespace Studio_1
 
         }
 
-        public string[] PlayB()
+        public static string[] PlayB()
         {
             string[] parolacce = new string[4];
             parolacce[0] = "merda!";
@@ -31,9 +31,9 @@ namespace Studio_1
 
         }
 
-        public bool PlayC(string parolaccia, int position)
+        public static bool PlayC(string parolaccia, int position)
         {
-            var parolacce = this.PlayB();
+            var parolacce = PlayArray.PlayB();
             parolacce[position] = parolaccia;
 
             foreach (string item in parolacce)
@@ -45,9 +45,9 @@ namespace Studio_1
 
         }
 
-        public void PlayMatrici()
+        public static bool PlayMatrici()
         {
-            // array a due dimensioni o matrice
+            // array moltidimensionali o matrice esempi array 2D e 3D
             string[,] codici = new string[3, 2]
             {
                 {"ABCD", "0010" },
@@ -88,11 +88,11 @@ namespace Studio_1
             Console.WriteLine("ricorda: anche per la matrici si parte da 0");
             Console.WriteLine("Esempio di iterazione righe colonne con for:");
 
-            for (int dim1 = 0; riga < dim1.GetLength(0); dim1++)
+            for (int dim1 = 0; dim1 < codici3d.GetLength(0); dim1++)
             {
-                for (int dim2 = 0; dim2 < codici.GetLength(1); dim2++)
+                for (int dim2 = 0; dim2 < codici3d.GetLength(1); dim2++)
                 {
-                    for (int dim3 = 0; dim3 < codici.GetLength(1); dim3++)
+                    for (int dim3 = 0; dim3 < codici3d.GetLength(1); dim3++)
                     {
                         Console.WriteLine("sono in dim1 " + dim1 + " dim2 " + dim2 + " dim3 " + dim3);
                         Console.WriteLine("Valore:" + codici3d[dim1, dim2, dim3]);
@@ -100,15 +100,15 @@ namespace Studio_1
                 }
             }
 
-            // con il foreach (ovviamente valido anche per gli array 2d) si può ciclare tutta la tabella senza gli indici
-
+            Console.WriteLine("con il foreach (ovviamente valido anche per gli array 2d) si può ciclare tutta la tabella senza gli indici");
             foreach (var codicesingolo in codici3d) 
             {
                 Console.WriteLine(codicesingolo);
             }
 
-        }
+            return true;
 
+        }
 
     }
 }

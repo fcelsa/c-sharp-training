@@ -54,31 +54,31 @@ namespace Studio_1
         public static string[] MenuItemList()
         {
             var menu = new string[] {
-                "Introduzione                   ",
-                "Tipi di dati e casting         ",
-                "Stringhe e Char                ",
-                "Blocchi condizionali if        ",
-                "Operatori ternari              ",
-                "Cicli for, foreach, do, while  ",
-                "Switch case statements         ",
-                "...e uscirne: break e continue ",
-                "Le eccezioni con try catch     ",
-                "Gestire input utente           ",
-                "Argomenti in riga di comando   ",
-                "Metodi e method overloading    ",
-                "Array e collection             ",
-                "Interagire con il S.O.         ",
-                "Leggere e scrivere i file      ",
-                "Accesso a dati remoti          ",
-                "Database ed SQL                ",
-                "Item 17                        ",
-                "Item 18                        ",
-                "Item 19                        ",
-                "Item 20                        ",
-                "Item 21                        ",
-                "Item 22                        ",
-                "Item 23                        ",
-                "Item 24                        "
+                "Introduzione                   ", // 0
+                "Tipi di dati e casting         ", // 1
+                "Stringhe e Char                ", // 2
+                "Blocchi condizionali if        ", // 3
+                "Operatori ternari              ", // 4
+                "Cicli for, foreach, do, while  ", // 5
+                "Switch case statements         ", // 6
+                "...e uscirne: break e continue ", // 7
+                "Le eccezioni con try catch     ", // 8
+                "Gestire input utente           ", // 9
+                "Argomenti in riga di comando   ", //10
+                "Metodi e method overloading    ", //11
+                "Array e collection             ", //12
+                "Interagire con il S.O.         ", //13
+                "Leggere e scrivere i file      ", //14
+                "Accesso a dati remoti          ", //15
+                "Database ed SQL                ", //16
+                "Item 17                        ", //17
+                "Item 18                        ", //18
+                "Item 19                        ", //19
+                "Item 20                        ", //20
+                "Item 21                        ", //21
+                "Item 22                        ", //22
+                "Item 23                        ", //23
+                "Saluti ed uscita dal programma "  //24
             };
 
             return menu;
@@ -197,6 +197,8 @@ $"""
                     break;
 
                 case 12:
+                    var impreca = PlayArray.PlayA(1);
+
                     stringone =
 $"""
 La definizione di array di esempio è nel codice commentato della classe PlayArray
@@ -206,6 +208,7 @@ Ricorda alcuni concetti:
    queste non possono essere cambiate, al limite possiamo combinarli ...
 
  - il ciclo tipico per leggere gli array è il foreach
+
 
 """;
                     break;
