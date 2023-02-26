@@ -12,33 +12,7 @@ namespace Studio_1
             // Prevent ending with CTL+C .
             Console.TreatControlCAsInput = true;
 
-            var menu = new MakeScreenMenu(new string[] { 
-                "Introduzione                   ",
-                "Tipi di dati e casting         ", 
-                "Stringhe e Char                ", 
-                "Blocchi condizionali if        ",
-                "Operatori ternari              ",
-                "Cicli for, foreach, do, while  ", 
-                "Switch case statements         ",
-                "...e uscirne: break e continue ",
-                "Le eccezioni con try catch     ",
-                "Gestire input utente           ",
-                "Argomenti in riga di comando   ",
-                "Metodi e method overloading    ",
-                "Array e collection             ",
-                "Interagire con il S.O.         ",
-                "Leggere e scrivere i file      ",
-                "Accesso a dati remoti          ",
-                "Database ed SQL                ",
-                "Item 17                        ",
-                "Item 18                        ",
-                "Item 19                        ",
-                "Item 20                        ",
-                "Item 21                        ",
-                "Item 22                        ",
-                "Item 23                        ",
-                "Item 24                        "
-            });
+            var menu = new MakeScreenMenu(ConsoleMenuPainter.MenuItemList());
 
             var menuPainter = new ConsoleMenuPainter(menu);
 
