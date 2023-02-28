@@ -13,7 +13,6 @@ namespace Studio_1
             Items = items.ToArray();
         }
 
-
         public IReadOnlyList<string> Items { get; }
 
         public int SelectedIndex { get; private set; } = 0;  // -1 nothing selected  0 = 1st selected
@@ -84,7 +83,7 @@ namespace Studio_1
             return menu;
         }
 
-        public string[] DescMenuItem(int descIdx)
+        public static string[] DescMenuItem(int descIdx)
         {
             var stringone = "";
 
@@ -208,6 +207,11 @@ Ricorda alcuni concetti:
    queste non possono essere cambiate, al limite possiamo combinarli ...
 
  - il ciclo tipico per leggere gli array è il foreach
+ - ma per ciclare correttamente array a più dimensioni, servono cicli for nidificati.
+
+ Esistono poi le arraylist, che forse è meglio dire collezioni, sono mutabili e
+ possono contenere dati di tipo diverso.
+
 
 
 """;

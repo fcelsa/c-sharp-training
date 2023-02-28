@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,9 +109,61 @@ namespace Studio_1
             }
 
             return true;
-
         }
 
+        public static bool PlayArrayOfArray()
+        {
+            // array irregolari o array di array o Jagged - la dimensione non è predefinita può avere elementi diversi nelle dimensioni
+
+            int[][] arrayAdMinchiam =
+            {
+                new int[] { 10, 11, 12, 13,14, 15, 16,17, 18, 19, 20, 21, 22,23, 24, 25,26, 27, 28, 29, 30 },
+                new int[] { 1, 2, 3, 4,5, 6, 7,8, 9 },
+                new int[] { 100, 1000, 10000, 100000 },
+                new int[] { 5, 7, 9 }
+            };
+
+            // esempio elemento
+            Console.WriteLine(arrayAdMinchiam[2][2]);
+
+            // iterazione come per array dimensionale ma ci basta prendere nomevariabile.Length 
+            for (int riga = 0; riga < arrayAdMinchiam.Length; riga++)
+            {
+                for (int colonna = 0; colonna < arrayAdMinchiam[riga].Length; colonna++)
+                {
+                    Console.WriteLine("sono in riga " + riga + " e colonna " + colonna);
+                    Console.WriteLine("Valore:" + arrayAdMinchiam[riga][colonna]);
+                }
+            }
+
+            return true;
+        }
+
+        public static bool PlayCollection()
+        {
+            // due modi di difinire una collection (o arraylist)
+
+            ArrayList MiaCollezione = new ArrayList();
+            MiaCollezione.Add("elemento 1");
+            MiaCollezione.Add("elemento 2");
+
+            Console.WriteLine(MiaCollezione.Count);
+            Console.WriteLine(MiaCollezione);
+
+            ArrayList MiaCollezione2 = new ArrayList()
+            {
+                10,20,30,40,50,60,70,80,90,"elemento9", true, null, "elemento12", null
+            };
+
+            // ci sono poi vari metodi per manipolare la lista i cui elementi sono oggetti a tutti gli effetti,
+            // infatti la possibile iterazione è questa:
+            foreach (object item in MiaCollezione2)
+            {
+                Console.WriteLine(item);
+            }
+
+            return true;
+        }
     }
 }
 

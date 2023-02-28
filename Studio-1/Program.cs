@@ -1,14 +1,11 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.X86;
-using System.Security.Cryptography;
-
-namespace Studio_1
+﻿namespace Studio_1
 {
     internal class Program
     {
         static void Main(string[] args)
+        
         {
-
+        
             // Prevent ending with CTL+C .
             Console.TreatControlCAsInput = true;
 
@@ -75,7 +72,7 @@ namespace Studio_1
             }
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.SetCursorPosition(38, 2);
-            var scrivo = menuPainter.DescMenuItem((sbyte)menu.SelectedIndex);
+            var scrivo = ConsoleMenuPainter.DescMenuItem((sbyte)menu.SelectedIndex);
             for (int i = 0; i < scrivo.Length; i++)
             {
                 Console.SetCursorPosition(38, i + 2);
@@ -123,7 +120,7 @@ namespace Studio_1
                     break;
 
                 case 1:
-                    #region Tipi di dati principali
+#region Tipi di dati principali
 
                     Console.WriteLine(bugiardo);
                     Console.WriteLine(piccolissimo);
@@ -193,11 +190,11 @@ namespace Studio_1
 
                     // operatori logici  && || !    (rispettivamente and or not)
 
-                    #endregion
+#endregion
                     break;
 
                 case 2:
-                    #region Stringhe
+#region Stringhe
 
                     // stringhe
                     // si possono racchiudere fra ' oppure ""  il che può essere utile per usarle nella stringa stessa,
@@ -232,7 +229,7 @@ namespace Studio_1
 
 
 
-                    #region multiline verbatim string literal
+#region multiline verbatim string literal
 
                     var stringone = $"""
 Questo è uno stringone che supporta ritorno a capo come qui
@@ -250,7 +247,7 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
 
                     Console.WriteLine(stringone);
 
-                    #endregion
+#endregion
 
                     // Verbatim literal $@ non interpreta gli escape.
                     var path = $@"C:\\asdc\asdf";
@@ -286,17 +283,17 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     Console.WriteLine(ilPipponeR1.IndexOf(','));   //indice della prima occorrenza del carattere cercato in argomento del metodo.
                     Console.WriteLine(ilPipponeR1.Substring(12));  //intellicode tende a far semplificare con stringa[12..]
 
-                    #endregion
+#endregion
                     break;
 
                 case 3:
-                    #region Blocchi condizionali if
+#region Blocchi condizionali if
 
-                    #endregion
+#endregion
                     break;
 
                 case 4:
-                    #region Operatori ternari
+#region Operatori ternari
                     // esempio operatore ternario (un modo alternativo e compatto, in alcuni casi per eliminare if else)
                     string scelta;
                     np = 256;
@@ -309,11 +306,11 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     scelta = np % 2 != 0 ? "dispari" : (np > 256 ? "pari maggiore di 256" : "pari miniore di 256");
                     Console.WriteLine(scelta);
 
-                    #endregion
+#endregion
                     break;
 
                 case 5:
-                    #region Cicli iterativi
+#region Cicli iterativi
                     
                     // cicli iterativi for e foreach
 
@@ -349,7 +346,7 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
 
                     }
 
-                    #endregion
+#endregion
                     break;
 
                 case 6:
@@ -377,7 +374,7 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     break;
 
                 case 12:
-                    #region Array
+#region Array
                     
                     // semplice esempio per dichiarare array di stringhe o altri oggetti non numerici
                     string[] arrayDiStr = { "Pippo", "Paperino", "Pluto", "Paperoga", "Nonna Papera" };
@@ -386,7 +383,11 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     var impreca = PlayArray.PlayA(1);
                     Console.WriteLine(impreca);
 
-                    #endregion
+                    PlayArray.PlayC("caz", 3);
+                    PlayArray.PlayMatrici();
+                    PlayArray.PlayArrayOfArray();
+
+#endregion
                     break;
 
                 case 13:
