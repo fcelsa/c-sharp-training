@@ -24,11 +24,10 @@ namespace iso6346_check
         // for example MRKU245518-9
         static void Main(string[] args)
         {
-            Console.BackgroundColor= ConsoleColor.Blue;
-            Console.ForegroundColor= ConsoleColor.White;
-            Console.Clear();
-            
+
+        ENTRY_POINT:                        
             string cntrNumber;
+            bool cliCalled = false;
 
             while (true)
             {
@@ -36,6 +35,7 @@ namespace iso6346_check
                 if (args.Length != 0)
                 {
                     cntrNumber = args[0];
+                    cliCalled = true;
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace iso6346_check
             var serialPart = cntrNumber[..10].ToUpper();
             var checkDigit = Int16.Parse(cntrNumber.Substring(cntrNumber.Length -1, 1));
 
-            Console.WriteLine(serialPart+ "     --> " + checkDigit);
+            //Console.WriteLine(serialPart+ "     --> " + checkDigit);
 
 
             if (checkDigit == CkIso6346(serialPart))
@@ -69,8 +69,9 @@ namespace iso6346_check
             }
 
             Console.ReadKey();
-            Console.ResetColor();
-            Console.Clear();
+
+            if (!cliCalled) goto ENTRY_POINT;
+
             return;
 
 
@@ -91,10 +92,13 @@ namespace iso6346_check
                         e = ((Utils.Asc(cntr[i-1])) - 48) * (int)Math.Pow(2, i - 1);
                     }
                     s += e;
-                    Console.WriteLine(e);
+                    //Console.WriteLine(e);
                 }
 
-                var chk = (s % 11) % 10;
+                //var chk = (s % 11) % 10;
+                var chk = (s - int.Abs(s / 11 ) * 11) % 10;
+
+                //(s - Fix(s / 11) * 11) Mod 10
 
                 Console.WriteLine(chk);
 
