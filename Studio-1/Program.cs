@@ -386,6 +386,9 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     PlayArray.PlayC("caz", 3);
                     PlayArray.PlayMatrici();
                     PlayArray.PlayArrayOfArray();
+                    PlayArray.PlayCollection();
+                    PlayArray.PlayTheList();
+                    PlayArray.PlayHashtable();
 
 #endregion
                     break;

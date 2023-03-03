@@ -142,6 +142,7 @@ namespace Studio_1
         public static bool PlayCollection()
         {
             // due modi di difinire una collection (o arraylist)
+            // gli array list possono avere tipi differenti ed oggetti differenti anche altri array ecc.
 
             ArrayList MiaCollezione = new ArrayList();
             MiaCollezione.Add("elemento 1");
@@ -163,6 +164,91 @@ namespace Studio_1
             }
 
             return true;
+        }
+
+        public static bool PlayTheList()
+        {
+            // le liste possono contenere solo tipi di dati definiti
+            // ma la lunghezza può essere indefinita e si possono aggiungere e rimuovere elementi.
+
+            List<string> myList = new List<string>();
+            
+            string[] arrrayDiStoCazzo = { "sto cazzo", "sta minchia", "sta fava" };
+            
+            myList.AddRange(arrrayDiStoCazzo);
+
+            myList.Add("sta fregna");
+
+            Console.WriteLine(myList);
+
+            foreach (string item in myList)
+            {
+                Console.WriteLine(item);
+            }
+
+            return true;
+        }
+
+        public static bool PlayHashtable() 
+        {
+            // Le hashtable sono collection con dati chiave - valore
+            // si leggono e manipolano solo per chiave, non per indice.
+
+            Hashtable myHashtable = new Hashtable();
+
+            Hashtable myHashtable2 = new Hashtable()
+            {
+                {"AR", "Arezzo" },
+                {"FI", "Firenze" },
+                {"SI", "Siena" },
+                {"GR", "Grosseto" },
+                {"PI", "Pisa"},
+                {"LI", "Livorno" },
+                {"PO", "Prato" },
+                {"PT", "Pistoia" },
+                {"LU", "Lucca" },
+                {"MS", "Massa" }
+            };
+
+            Console.WriteLine(myHashtable2["LU"]);
+
+            foreach (DictionaryEntry citta in myHashtable2)
+            {
+                Console.WriteLine($"Chiave: {citta.Key}  valore: {citta.Value}");
+                Console.WriteLine(myHashtable2.ContainsValue("Grosseto"));
+            }
+
+            return myHashtable2.ContainsKey("GR");
+        }
+
+        public static bool PlayDictionary()
+        {
+            // Le dict o dictionary sono collection con dati chiave - valore come le hashtable
+            // si leggono e manipolano solo per chiave, non per indice, ma il tipo di dati sia
+            // della chiave che del valore devono essere definiti.
+
+            Dictionary<int, string> myDict1 = new Dictionary<int, string>()
+            {
+                {1, "Arezzo" },
+                {2, "Firenze" },
+                {3, "Siena" },
+                {4, "Grosseto" },
+                {5, "Pisa"},
+                {6, "Livorno" },
+                {7, "Prato" },
+                {8, "Pistoia" },
+                {9, "Lucca" },
+                {10, "Massa" }
+            };
+
+            Console.WriteLine(myDict1[9]);
+
+            foreach (KeyValuePair<int,string> id in myDict1)
+            {
+                Console.WriteLine($"Chiave: {id.Key}  valore: {id.Value}");
+            }
+
+            return myDict1.ContainsKey(10);
         }
     }
 }
