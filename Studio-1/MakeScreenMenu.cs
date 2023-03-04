@@ -205,14 +205,20 @@ La definizione di array di esempio è nel codice commentato della classe PlayArr
 Ricorda alcuni concetti: 
  - non si può sforare la dimensione dell'array ed una volta definite le dimensioni
    queste non possono essere cambiate, al limite possiamo combinarli ...
-
  - il ciclo tipico per leggere gli array è il foreach
  - ma per ciclare correttamente array a più dimensioni, servono cicli for nidificati.
 
- Esistono poi le arraylist, che forse è meglio dire collezioni, sono mutabili e
- possono contenere dati di tipo diverso.
-
-
+ Gli array sono strutture semplici le cui dimensioni possono essere controllate,
+ ma nei linguaggi OOP come C# è più frequente parlare di collection; le collezioni
+ sono mutabili e possono contenere dati di tipo diverso, nel caso delle ArrayList
+ anche di tipo diverso, ma vediamole tutte:
+  - ArrayList  : possono contenere dati di tipo diverso, anche altre liste o array
+  - List       : contengono tipi di dati definiti e quindi da dichiarare
+  - Hashtable  : collection con coppie chiave-valore, si manipolano solo per chiave.
+  - Dictionary : sono simili alle HashTable, ma il tipo di dato di chiave e valore 
+                 devono essere dichiarati.
+  - Stack      : struttura LIFO
+  - Queue      : struttura FIFO
 
 """;
                     break;

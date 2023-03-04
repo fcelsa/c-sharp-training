@@ -250,6 +250,56 @@ namespace Studio_1
 
             return myDict1.ContainsKey(10);
         }
+
+        public static bool PlayStack()
+        {
+            // stack: strutture LIFO, per capire il concetto di stack (pila) basta pensare al mazzo di carte da gioco.
+            // vari metodi, ma per capire il concetto prova Push Pop Clear ...
+            Stack<string> mazzo = new Stack<string>();
+            mazzo.Push("2");
+            mazzo.Push("3");
+            mazzo.Push("4");
+            mazzo.Push("5");
+            mazzo.Push("6");
+            mazzo.Push("7");
+            mazzo.Push("Fante");
+            mazzo.Push("Regina");
+            mazzo.Push("Re");
+            mazzo.Push("Asso");
+
+            mazzo.Pop();
+
+            Console.WriteLine(mazzo.Peek());
+
+            return true;
+
+        }
+
+        public static bool PlayQueue() 
+        {
+            // Queue: strutture FIFO, pensa alla coda dal dottore, alla posta ecc.
+            // metodi enqueue, peek, dequeue, clear
+            Queue<string> laCoda = new Queue<string>();
+            laCoda.Enqueue("Beppe");
+            laCoda.Enqueue("Giova");
+            laCoda.Enqueue("Gosto");
+            laCoda.Enqueue("Cicccio");
+            laCoda.Enqueue("Leo");
+            laCoda.Enqueue("Fra");
+
+            Console.WriteLine(laCoda.Peek());
+            laCoda.Dequeue();
+            foreach (var persona in laCoda) Console.WriteLine(persona);
+
+            while (laCoda.Count > 0)
+            {
+                Console.WriteLine(laCoda.Dequeue());
+            }
+
+            return true;
+        }
+
+
     }
 }
 
