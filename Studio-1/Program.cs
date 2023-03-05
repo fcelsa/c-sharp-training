@@ -394,6 +394,12 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     break;
 
                 case 13:
+#region Class test
+                    Persona persona1 = new Persona();
+                    persona1.nome = "Gosto";
+                    persona1.Saluta();
+                    
+#endregion
 
                     break;
 
@@ -441,6 +447,16 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
             Console.ReadKey();
             if (exit) return; else goto MAIN_INPUT_CYCLE;
                         
+        }
+    }
+
+    class Persona
+    {
+        public string nome;
+
+        public void Saluta()
+        {
+            Console.WriteLine($"ciao mi chiamo {this.nome} e vi saluto!");
         }
     }
 }

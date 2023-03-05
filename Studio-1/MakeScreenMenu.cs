@@ -19,11 +19,9 @@ namespace Studio_1
 
         public string SelectedOption => SelectedIndex != -1 ? Items[SelectedIndex] : null;
 
-
         public void MoveUp() => SelectedIndex = Math.Max(SelectedIndex - 1, 0);
 
         public void MoveDown() => SelectedIndex = Math.Min(SelectedIndex + 1, Items.Count - 1);
-
 
     }
 
@@ -66,7 +64,7 @@ namespace Studio_1
                 "Argomenti in riga di comando   ", //10
                 "Metodi e method overloading    ", //11
                 "Array e collection             ", //12
-                "Interagire con il S.O.         ", //13
+                "Oggetti, classi, metodi...     ", //13
                 "Leggere e scrivere i file      ", //14
                 "Accesso a dati remoti          ", //15
                 "Database ed SQL                ", //16
@@ -226,6 +224,16 @@ Ricorda alcuni concetti:
                 case 13:
                     stringone =
 $"""
+Oggetti, classi, metodi costruttori vanno visti nel codice; tenere a mente che
+la definizione di una classe principalmente si fa per oggetti istanziabili.
+Se un oggetto non è istanziabile, la classe si riduce semplicemente a
+un insieme di metodi (funzioni) per eseguire determinate operazioni, 
+passando eventualmente parametri e ricevendone eventuali valori di ritorno.
+In Program.cs c'è un esempio semplice di definizione di classe e nel
+codice di esempio eseguibile da qui alcune operazioni di creazione oggetto 
+e nuove istanze ed a seguire un esempio di costruttore.
+In tutto il codice ci sono altre classi definite come quella per fare il
+menu stesso.
 
 """;
                     break;
