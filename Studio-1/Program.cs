@@ -398,6 +398,8 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     Persona persona1 = new Persona();
                     persona1.nome = "Gosto";
                     persona1.Saluta();
+
+
                     
 #endregion
 
@@ -453,6 +455,32 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
     class Persona
     {
         public string nome;
+        public string cognome;
+        public string soprannome;
+        public int natoAA;
+        public int natoMM;
+        public int natoGG;
+        public bool morto;
+        
+        // questo è un costruttore
+        public Persona(string nome, string cognome, string soprannome, int natoAA, int natoMM, int natoGG, bool morto)
+        {
+            this.nome = nome;
+            this.cognome = cognome;
+            this.soprannome = soprannome;
+            this.natoAA = natoAA;
+            this.natoMM = natoMM;
+            this.natoGG = natoGG;
+            this.morto = morto;
+        }
+
+        // questi che seguono sono constructor overload
+        public Persona() { }
+
+        public Persona(string soprannome)
+        {
+            this.soprannome=soprannome;
+        }
 
         public void Saluta()
         {
