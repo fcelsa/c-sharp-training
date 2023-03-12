@@ -10,7 +10,7 @@ namespace Studio_1
 
         private static JsonItems[] jsonitems;
 
-        public static string JsonInit()
+        public static void JsonInit()
         {
             var menuItemsJson = new JsonItems[24];
             string json = string.Empty;
@@ -37,9 +37,6 @@ namespace Studio_1
                 json = File.ReadAllText(Program.JSONDATAFILE);
                 jsonitems = JsonSerializer.Deserialize<JsonItems[]>(json);
             }
-
-            return json;
-
         }
         
         public static string MenuFromJson(int id,  bool isDesc)
