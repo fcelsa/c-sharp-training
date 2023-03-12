@@ -2,6 +2,14 @@
 {
     internal class Program
     {
+        public const string JSONDATAFILE = @"assets\menu.json";
+
+        static readonly string textFile = @"assets\description.txt";
+        public static string TextFile 
+        { 
+            get { return textFile; }
+        }
+
         static void Main(string[] args)
         
         {
@@ -9,6 +17,8 @@
             // Prevent ending with CTL+C .
             Console.TreatControlCAsInput = true;
 
+            JsonItems.JsonInit();
+            
             var menu = new MakeScreenMenu(ConsoleMenuPainter.MenuItemList());
 
             var menuPainter = new ConsoleMenuPainter(menu);
@@ -17,6 +27,7 @@
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Gray;
 
+            
             // ovviamente questa progressbar è finta... 
             Console.Write("Performing some task... ...solo per finta ...");
             using (var progress = new ProgressBar())
@@ -435,6 +446,14 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     break;
 
                 case 23:
+                    if (File.Exists(Program.TextFile))
+                    {
+                        // Read a text file line by line.
+                        string[] lines = File.ReadAllLines(Program.TextFile);
+                        foreach (string line in lines)
+                            Console.WriteLine(line);
+                    }
+
                     break;
 
                 case 24:
@@ -449,42 +468,6 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
             Console.ReadKey();
             if (exit) return; else goto MAIN_INPUT_CYCLE;
                         
-        }
-    }
-
-    class Persona
-    {
-        public string nome;
-        public string cognome;
-        public string soprannome;
-        public int natoAA;
-        public int natoMM;
-        public int natoGG;
-        public bool morto;
-        
-        // questo è un costruttore
-        public Persona(string nome, string cognome, string soprannome, int natoAA, int natoMM, int natoGG, bool morto)
-        {
-            this.nome = nome;
-            this.cognome = cognome;
-            this.soprannome = soprannome;
-            this.natoAA = natoAA;
-            this.natoMM = natoMM;
-            this.natoGG = natoGG;
-            this.morto = morto;
-        }
-
-        // questi che seguono sono constructor overload
-        public Persona() { }
-
-        public Persona(string soprannome)
-        {
-            this.soprannome=soprannome;
-        }
-
-        public void Saluta()
-        {
-            Console.WriteLine($"ciao mi chiamo {this.nome} e vi saluto!");
         }
     }
 }

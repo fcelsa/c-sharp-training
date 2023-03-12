@@ -51,31 +51,31 @@ namespace Studio_1
         public static string[] MenuItemList()
         {
             var menu = new string[] {
-                "Introduzione                   ", // 0
-                "Tipi di dati e casting         ", // 1
-                "Stringhe e Char                ", // 2
-                "Blocchi condizionali if        ", // 3
-                "Operatori ternari              ", // 4
-                "Cicli for, foreach, do, while  ", // 5
-                "Switch case statements         ", // 6
-                "...e uscirne: break e continue ", // 7
-                "Le eccezioni con try catch     ", // 8
-                "Gestire input utente           ", // 9
-                "Argomenti in riga di comando   ", //10
-                "Metodi e method overloading    ", //11
-                "Array e collection             ", //12
-                "Oggetti, classi, metodi...     ", //13
-                "Leggere e scrivere i file      ", //14
-                "Accesso a dati remoti          ", //15
-                "Database ed SQL                ", //16
-                "Item 17                        ", //17
-                "Item 18                        ", //18
-                "Item 19                        ", //19
-                "Item 20                        ", //20
-                "Item 21                        ", //21
-                "Item 22                        ", //22
-                "Item 23                        ", //23
-                "Saluti ed uscita dal programma "  //24
+                JsonItems.MenuFromJson(0,false), 
+                JsonItems.MenuFromJson(1,false), 
+                JsonItems.MenuFromJson(2,false), 
+                JsonItems.MenuFromJson(3,false), 
+                JsonItems.MenuFromJson(4,false), 
+                JsonItems.MenuFromJson(5,false), 
+                JsonItems.MenuFromJson(6,false), 
+                JsonItems.MenuFromJson(7,false), 
+                JsonItems.MenuFromJson(8,false), 
+                JsonItems.MenuFromJson(9,false), 
+                JsonItems.MenuFromJson(10,false),
+                JsonItems.MenuFromJson(11,false),
+                JsonItems.MenuFromJson(12,false),
+                JsonItems.MenuFromJson(13,false),
+                JsonItems.MenuFromJson(14,false),
+                JsonItems.MenuFromJson(15,false),
+                JsonItems.MenuFromJson(16,false),
+                JsonItems.MenuFromJson(17,false),
+                JsonItems.MenuFromJson(18,false),
+                JsonItems.MenuFromJson(19,false),
+                JsonItems.MenuFromJson(20,false),
+                JsonItems.MenuFromJson(21,false),
+                JsonItems.MenuFromJson(22,false),
+                JsonItems.MenuFromJson(23,false),
+                JsonItems.MenuFromJson(24,false)
             };
 
             return menu;
@@ -88,24 +88,7 @@ namespace Studio_1
             switch (descIdx)
             {
                 case 0:
-                    stringone =
-$"""
-Questo è il risultato degli appunti e del codice scritto per imparare 
-le basi di C#; i concetti appresi sono direttamente nel codice, 
-con relativi commenti, sulla base di questo menu ho cercato di 
-racchiudere i blocchi di codice relativo all'argomento in blocchi 
-#region ... #endregion, una direttiva del preprocessor che permette
-agli editor di collassare quella parte di codice racchiuso li dentro
-per migliorare la leggibilità.
-Alcuni concetti, costrutti ed algoritmi utili sono disseminati nel
-codice per generare questo stesso menu.
-Program.cs è l'entry point di ogni programma c# per console.
-I primi concetti base son quasi tutti in questo file e per gli argomenti
-più avanzati ho creato una classe apposita in file separato.
-
-
-Con [CTRL]+[E] viene eseguito la parte di codice di competenza e mostrato l'output.
-""";
+                    stringone = JsonItems.MenuFromJson(0, true);
                     break;
 
                 case 1:
@@ -130,10 +113,14 @@ attenzione, qui si va a capo senza escapare i \n
                     break;
 
                 case 3:
+                 
+
                     stringone =
 $"""
-
+{JsonItems.MenuFromJson(3,true)}
 """;
+
+
                     break;
 
                 case 4:
@@ -241,7 +228,7 @@ menu stesso.
                 case 14:
                     stringone =
 $"""
-
+I metodi getter e setter di una proprietà di una classe, 
 """;
                     break;
 
@@ -297,7 +284,7 @@ $"""
                 case 22:
                     stringone =
 $"""
-
+{JsonItems.MenuFromJson(22,true)}
 """;
                     break;
 
