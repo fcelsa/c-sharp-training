@@ -9,7 +9,6 @@ namespace Studio_1
         public string MenuDescription { get; set; }
 
         private static JsonItems[] jsonitems;
-
         public static void JsonInit()
         {
             var menuItemsJson = new JsonItems[24];

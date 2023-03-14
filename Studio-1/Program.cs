@@ -17,12 +17,11 @@
             // Prevent ending with CTL+C .
             Console.TreatControlCAsInput = true;
 
+            // menu maker logic and navigation from file json
             JsonItems.JsonInit();
-            
             var menu = new MakeScreenMenu(ConsoleMenuPainter.MenuItemList());
-
             var menuPainter = new ConsoleMenuPainter(menu);
-
+            
             bool done = false;
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Gray;
