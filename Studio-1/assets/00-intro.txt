@@ -1,0 +1,27 @@
+Questo è il risultato degli appunti e del codice scritto per imparare
+le basi di C#; i concetti appresi sono direttamente nel codice,
+con relativi commenti, sulla base di questo menu ho cercato di
+racchiudere i blocchi di codice relativo all'argomento in blocchi
+#region ... #endregion, una direttiva del preprocessor che permette
+agli editor di collassare quella parte di codice racchiuso li dentro
+per migliorare la leggibilità.
+
+Nel costruire questa stessa applicazione sono stati applicati i
+concetti che via via ho appreso rendendo di fatto questo codice
+autoreferenziale ed autoesplicativo, con vari commenti dove necessario.
+
+Program.cs è l'entry point di ogni programma C# console.
+I primi concetti base come sintassi, tipi, operatori, confronti ecc. 
+son quasi tutti in questo file, mentre per gli argomenti più avanzati, 
+soprattutto quelli legati alla OOP, ho creato classi e metodi appositi
+in file separati.
+A differenza di Java, il nome del file C# non è necessario che corrisponda 
+al nome della classe, anche se spesso si adotta questa convenzione per
+una maggiore chiarezza. 
+
+C# è case-sensitive: "MyClass" and "myclass" sono differenti!
+Le parentesi graffe {} segnano l'inizio e la fine di un blocco di codice.
+Tutte le istruzioni devono terminare con un punto e virgola ;
+
+Con [CTRL]+[E] viene eseguito e mostrato l'output della parte di codice 
+spiegata per quel capitolo.

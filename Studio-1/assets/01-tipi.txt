@@ -1,0 +1,8 @@
+Tipi di dato e casting
+I tipi di dato standard sono moltissimi, alcuni concetti base da ricordare:
+Le stringhe sono array di char, tanto è vero che String è una classe, esiste
+la parola chiave string solo per pura comodità nella scrittura del codice.
+I tipi interi sono vari in base alla dimensione e per tutti esiste la unsigned
+per es. Int32 --> UInt32, unica eccezione il tipo byte, che va da 0 a 255
+ma c'é sbyte che va da -127 a 128.
+

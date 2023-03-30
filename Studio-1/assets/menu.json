@@ -1,0 +1,127 @@
+[
+  {
+    "Id": 0,
+    "MenuName": "Introduzione",
+    "descFile": "00-intro.txt"
+  },
+  {
+    "Id": 1,
+    "MenuName": "Tipi di dati e casting",
+    "descFile": "01-tipi.txt"
+  },
+  {
+    "Id": 2,
+    "MenuName": "Stringhe e Char",
+    "descFile": "02-stringhe.txt"
+  },
+  {
+    "Id": 3,
+    "MenuName": "Blocchi condizionali if switch",
+    "descFile": "03-condizioni.txt"
+  },
+  {
+    "Id": 4,
+    "MenuName": "Cicli for, foreach, do, while",
+    "descFile": "04-cicli.txt"
+  },
+  {
+    "Id": 5,
+    "MenuName": "Array",
+    "descFile": "05-array.txt"
+  },
+  {
+    "Id": 6,
+    "MenuName": "Switch case statements",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 7,
+    "MenuName": "Le eccezioni con try catch",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 8,
+    "MenuName": "Gestire input utente",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 9,
+    "MenuName": "Argomenti in riga di comando",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 10,
+    "MenuName": "Metodi e method overloading",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 11,
+    "MenuName": "Collection e liste?",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 12,
+    "MenuName": "OOP: Oggetti e classi",
+    "descFile": "12-oop.txt"
+  },
+  {
+    "Id": 13,
+    "MenuName": "Getter e Setter di una classe",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 14,
+    "MenuName": "voce menu # 14",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 15,
+    "MenuName": "voce menu # 15",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 16,
+    "MenuName": "voce menu # 16",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 17,
+    "MenuName": "voce menu # 17",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 18,
+    "MenuName": "voce menu # 18",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 19,
+    "MenuName": "voce menu # 19",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 20,
+    "MenuName": "voce menu # 20",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 21,
+    "MenuName": "voce menu # 21",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 22,
+    "MenuName": "voce menu # 22",
+    "descFile": "22-sticazzi.txt"
+  },
+  {
+    "Id": 23,
+    "MenuName": "voce menu # 23",
+    "descFile": "default.txt"
+  },
+  {
+    "Id": 24,
+    "MenuName": "voce menu # 24",
+    "descFile": "default.txt"
+  }
+]

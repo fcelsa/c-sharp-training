@@ -1,0 +1,27 @@
+Blocchi condizionali nel codice, sezione apposita di Program:
+
+if else if else
+Short hand if...else o anche operatori ternari
+
+switch 
+si usa quando ci sono tante alternative e relativo codice.
+
+Le condizioni logiche sono:
+
+Less than               : a < b
+Less than or equal to   : a <= b
+Greater than            : a > b
+Greater than or equal to: a >= b
+Equal to                : a == b
+Not Equal to            : a != b
+
+The switch expression is evaluated once
+The value of the expression is compared with the values of each case
+If there is a match, the associated block of code is executed
+
+break interrompe ogni successivo controllo ed esce dal blocco switch
+
+default alla fine serve per eseguire qualcosa se nessuna condizione
+è soddisfatta (opzionale)
+
+

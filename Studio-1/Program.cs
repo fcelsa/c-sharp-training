@@ -4,16 +4,15 @@
     {
         public const string JSONDATAFILE = @"assets\menu.json";
 
-        static readonly string textFile = @"assets\description.txt";
-        public static string TextFile 
+        static readonly string assetFilePath = @"assets\";
+        public static string AssetFilePath 
         { 
-            get { return textFile; }
+            get { return assetFilePath; }
         }
 
         static void Main(string[] args)
         
-        {
-        
+        {        
             // Prevent ending with CTL+C .
             Console.TreatControlCAsInput = true;
 
@@ -48,6 +47,7 @@
             Console.BackgroundColor = ConsoleColor.Blue;
             Console.ForegroundColor = ConsoleColor.Yellow;
             int maxW = Console.WindowWidth;
+            int maxH = Console.WindowHeight;
             string intestaTitolo = "Corso di apprendimento C#  Studio-1";
             string padding = new string(' ', (maxW - intestaTitolo.Length) / 2);
             Console.Write(padding + intestaTitolo + padding);
@@ -85,7 +85,7 @@
             var scrivo = ConsoleMenuPainter.DescMenuItem((sbyte)menu.SelectedIndex);
             for (int i = 0; i < scrivo.Length; i++)
             {
-                Console.SetCursorPosition(38, i + 2);
+                Console.SetCursorPosition(38, Math.Clamp(i + 2, 2, maxH-3));
                 Console.Write(scrivo[i]);
             }
 
@@ -204,7 +204,7 @@
                     break;
 
                 case 2:
-#region Stringhe
+                    #region Stringhe
 
                     // stringhe
                     // si possono racchiudere fra ' oppure ""  il che può essere utile per usarle nella stringa stessa,
@@ -239,25 +239,25 @@
 
 
 
-#region multiline verbatim string literal
+                    #region multiline verbatim string literal
 
                     var stringone = $"""
-Questo è uno stringone che supporta ritorno a capo come qui
-non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
-  - caratteri speciali senza necessità di escape fra le tre virgolette in cima ed in fondo (su linea separata)
-  - si può scrivere ed andare a capo come e dove ci pare, supporta comunque l'interpolazione, ed è il caso
-  - di ricordare che fra le graffe ci può essere anche un espressione od una funzione, non solo nomi di variabili, per es.
+                    Questo è uno stringone che supporta ritorno a capo come qui
+                    non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
+                      - caratteri speciali senza necessità di escape fra le tre virgolette in cima ed in fondo (su linea separata)
+                      - si può scrivere ed andare a capo come e dove ci pare, supporta comunque l'interpolazione, ed è il caso
+                      - di ricordare che fra le graffe ci può essere anche un espressione od una funzione, non solo nomi di variabili, per es.
   
-  espressione per generare una stringa di apici ripetuta 10 volte :{new string('"', 10)}
-  altro esempio di interpolazione, risultato di fbMax: {fbMax}
+                      espressione per generare una stringa di apici ripetuta 10 volte :{new string('"', 10)}
+                      altro esempio di interpolazione, risultato di fbMax: {fbMax}
 
-  Almeno un questa versione di Visual Studio, le 3 virgolette di chiusura con il ; finale devono essere in una nuova riga all'inizio.
+                      Almeno un questa versione di Visual Studio, le 3 virgolette di chiusura con il ; finale devono essere in una nuova riga all'inizio.
 
-""";
+                    """;
 
                     Console.WriteLine(stringone);
 
-#endregion
+                    #endregion
 
                     // Verbatim literal $@ non interpreta gli escape.
                     var path = $@"C:\\asdc\asdf";
@@ -293,18 +293,31 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     Console.WriteLine(ilPipponeR1.IndexOf(','));   //indice della prima occorrenza del carattere cercato in argomento del metodo.
                     Console.WriteLine(ilPipponeR1.Substring(12));  //intellicode tende a far semplificare con stringa[12..]
 
-#endregion
+                    #endregion
+
                     break;
 
                 case 3:
-#region Blocchi condizionali if
+                    #region Blocchi condizionali if
 
-#endregion
-                    break;
+                    // blocco if completo di tutto...
+                    int x = 20;
 
-                case 4:
-#region Operatori ternari
+                    if (x == 20)
+                    {
+                        Console.WriteLine(x);
+                    }
+                    else if (x < 20)
+                    {
+                        Console.WriteLine(x);
+                    }
+                    else
+                    {
+                        Console.WriteLine(x);
+                    }
+
                     // esempio operatore ternario (un modo alternativo e compatto, in alcuni casi per eliminare if else)
+                    // chiamato anche short hand if...else
                     string scelta;
                     np = 256;
                     scelta = np > 256 ? "la fessa di sorita" : "la fessa di mameta";
@@ -316,7 +329,11 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     scelta = np % 2 != 0 ? "dispari" : (np > 256 ? "pari maggiore di 256" : "pari miniore di 256");
                     Console.WriteLine(scelta);
 
-#endregion
+                    #endregion
+                    break;
+
+                case 4:
+
                     break;
 
                 case 5:
@@ -445,13 +462,7 @@ non interpreta gli escape /n \n \\\\ \\\\&&& ci si mette che ci pare...
                     break;
 
                 case 23:
-                    if (File.Exists(Program.TextFile))
-                    {
-                        // Read a text file line by line.
-                        string[] lines = File.ReadAllLines(Program.TextFile);
-                        foreach (string line in lines)
-                            Console.WriteLine(line);
-                    }
+                    
 
                     break;
 
