@@ -3,6 +3,10 @@ using System.Diagnostics;
 using System.Net.Security;
 using System.Numerics;
 using System.Runtime.CompilerServices;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace anagrams
@@ -150,7 +154,7 @@ namespace anagrams
                 suggest = "";
                 string? s = Console.ReadLine();
 
-                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length || s == "mi arrendo")
+                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length)
                 {
                     s = Console.ReadLine();
                 }
@@ -208,11 +212,9 @@ namespace anagrams
             {
                 CliDesign.ShowScreen();
                 Console.WriteLine($"Definizione di {parolaDaIndovinare} \n");
-                Console.WriteLine(Utils.GetDefinitionFromDict(parolaDaIndovinare));
+                Console.WriteLine(DictRequest.GetDefinitionFromDict(parolaDaIndovinare));
                 return;
             }
-
-
 
         }
 

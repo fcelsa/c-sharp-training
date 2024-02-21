@@ -78,13 +78,6 @@ namespace anagrams
             return true;
         }
 
-        public static string GetDefinitionFromDict(string parola)
-        {
-            string definizione = parola + " :  stocazzo";
-            return definizione;
-
-        }
-
     }
 
 }
