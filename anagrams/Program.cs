@@ -97,15 +97,15 @@ namespace anagrams
         private static void WordGame()
         {
             CliDesign.ShowScreen();
-            int lenOfWordVal = 5; // default per lunghezza parola ? TODO non usa per ora
+            int lenOfWordVal = 5;
             string lenOfWordUserInput = "";
             string parolaDaIndovinare = string.Empty;
 
-            Console.WriteLine("Digita la lunghezza della parola che vuoi indovinare:\n");
+            Console.WriteLine("Digita la lunghezza della parola che vuoi indovinare [5]:\n");
             do
             {
                 string? s = Console.ReadLine();
-                lenOfWordUserInput = s;
+                lenOfWordUserInput = string.IsNullOrEmpty(s) ? "5" : s; // default per lunghezza parola 5 se user preme invio
             } while (!(int.TryParse(lenOfWordUserInput, out lenOfWordVal) && lenOfWordVal >= 3 && lenOfWordVal <= 12));
 
             string promptParola = new('-', lenOfWordVal);
@@ -150,7 +150,7 @@ namespace anagrams
                 suggest = "";
                 string? s = Console.ReadLine();
 
-                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length)
+                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length || s == "mi arrendo")
                 {
                     s = Console.ReadLine();
                 }
@@ -178,6 +178,10 @@ namespace anagrams
                 else if(s == parolaDaIndovinare)
                 {
                     promptParola = s;
+                }
+                else if(s == "mi arrendo")
+                {
+                    Console.WriteLine(parolaDaIndovinare);
                 }
                 
                 t++;
