@@ -4,10 +4,10 @@ using System.Net.Security;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
+using System.Net.Http;
+using System.Net;
 
 namespace anagrams
 {
@@ -123,8 +123,8 @@ namespace anagrams
                 if(paroleGuess.Count != 0)
                 {
                     parolaFound= true;
-                    //Console.WriteLine($"random generato: {paroleGuessP}  parole corrispondenti:");
-                    //foreach (var parolaGuess in paroleGuess) Console.WriteLine(parolaGuess.Name);
+                    Console.WriteLine($"random generato: {paroleGuessP}  parole corrispondenti:");
+                    foreach (var parolaGuess in paroleGuess) Console.WriteLine(parolaGuess.Name);
                     if (paroleGuess.Count > 1)
                     {
                         int rnd = Random.Shared.Next(0, paroleGuess.Count);

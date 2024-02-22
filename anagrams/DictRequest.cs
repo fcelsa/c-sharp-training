@@ -1,4 +1,7 @@
-﻿
+﻿using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace anagrams
 {
     internal class DictRequest
@@ -6,34 +9,39 @@ namespace anagrams
 
         public static string GetDefinitionFromDict(string parola)
         {
-            // Crea un client HTTP
-            using (var client = new HttpClient())
-
+            string encodedParola = WebUtility.UrlEncode(parola);
+            string finalDefinition = string.Empty;
             // Imposta l'URL del dizionario online
-            var url = $"https://it.wiktionary.org/w/api.php?action=query&prop=extracts&titles={parola}&format=json";
-
-            // Invia una richiesta GET al dizionario
-            var response = await client.GetAsync(url);
-
-            // Se la richiesta ha esito positivo
-            if (response.IsSuccessStatusCode)
+            string url = $"https://it.wiktionary.org/w/api.php?action=query&prop=extracts&titles={encodedParola}&format=json";
+            var awaiter = CallURL(url);
+            if (awaiter.Result != "")
             {
-                // Leggi la risposta come stringa JSON
-                var json = await response.Content.ReadAsStringAsync();
+                string jsonContent = awaiter.Result;
 
-                // Deserializza la stringa JSON in un oggetto
-                var dizionario = await System.Text.Json.JsonSerializer.DeserializeAsync<Dictionary<string, object>>(json);
+                // Deserializzazione del JSON in un oggetto
+                //dynamic jsonData = JsonConvert.DeserializeObject(jsonContent) ?? "result not found";
+                dynamic jsonData = JObject.Parse(jsonContent);
 
-                // Estrai la definizione dalla risposta
-                var definizione = dizionario["extract"][0]["extract"].ToString();
+                // Accesso alle proprietà dell'oggetto
+                string definitionTitle = jsonData.title;
+                string definitionExtract = jsonData.extract;
 
-                return definizione;
+                // Stampa dei dati
+                Console.WriteLine(jsonData);
+                Console.WriteLine($"Title: {definitionTitle}");
+                Console.WriteLine($"extract: {definitionExtract}");
+                finalDefinition = definitionExtract;
             }
-            else
-            {
-                // Stampa un messaggio di errore
-                return "Errore: la richiesta al dizionario online è fallita.";
-            }
+            return finalDefinition;
+        }
+
+        public static async Task<string> CallURL(string url)
+        {
+            HttpClient client = new HttpClient();
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            client.DefaultRequestHeaders.Accept.Clear();
+            var response = client.GetStringAsync(url);
+            return await response;
         }
     }
 }
