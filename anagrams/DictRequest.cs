@@ -1,36 +1,38 @@
-﻿using System.Net;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Text.Json;
 
 namespace anagrams
 {
+
     internal class DictRequest
     {
-
         public static string GetDefinitionFromDict(string parola)
         {
+            var options = new JsonDocumentOptions
+            {
+                AllowTrailingCommas = true,
+                CommentHandling = JsonCommentHandling.Skip
+            };
             string encodedParola = WebUtility.UrlEncode(parola);
             string finalDefinition = string.Empty;
+            string definitionExtract = string.Empty;
             // Imposta l'URL del dizionario online
             string url = $"https://it.wiktionary.org/w/api.php?action=query&prop=extracts&titles={encodedParola}&format=json";
             var awaiter = CallURL(url);
             if (awaiter.Result != "")
             {
                 string jsonContent = awaiter.Result;
+                using JsonDocument document = JsonDocument.Parse(jsonContent, options);
+                JsonElement root = document.RootElement;
 
-                // Deserializzazione del JSON in un oggetto
-                //dynamic jsonData = JsonConvert.DeserializeObject(jsonContent) ?? "result not found";
-                dynamic jsonData = JObject.Parse(jsonContent);
+                foreach (var property in document.RootElement.EnumerateObject())
+                {
+                    Console.WriteLine($"{property.Name} ValueKind={property.Value.ValueKind} Value={property.Value}");
+                }
 
-                // Accesso alle proprietà dell'oggetto
-                string definitionTitle = jsonData.title;
-                string definitionExtract = jsonData.extract;
+                finalDefinition = HtmlToText.ConvertWithRegex(root.ToString());
 
-                // Stampa dei dati
-                Console.WriteLine(jsonData);
-                Console.WriteLine($"Title: {definitionTitle}");
-                Console.WriteLine($"extract: {definitionExtract}");
-                finalDefinition = definitionExtract;
             }
             return finalDefinition;
         }
