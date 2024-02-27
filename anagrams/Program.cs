@@ -1,13 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Security;
-using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Net;
+﻿using System.Diagnostics;
 
 namespace anagrams
 {
@@ -123,8 +114,9 @@ namespace anagrams
                 if(paroleGuess.Count != 0)
                 {
                     parolaFound= true;
-                    Console.WriteLine($"random generato: {paroleGuessP}  parole corrispondenti:");
-                    foreach (var parolaGuess in paroleGuess) Console.WriteLine(parolaGuess.Name);
+                    //solo per debug per vedere il numero primo generato e le parole corrispondanti.
+                    //Console.WriteLine($"random generato: {paroleGuessP}  parole corrispondenti:");
+                    //foreach (var parolaGuess in paroleGuess) Console.WriteLine(parolaGuess.Name);
                     if (paroleGuess.Count > 1)
                     {
                         int rnd = Random.Shared.Next(0, paroleGuess.Count);
@@ -154,22 +146,22 @@ namespace anagrams
                 suggest = "";
                 string? s = Console.ReadLine();
 
-                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length)
+                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length || s == "x")
                 {
                     s = Console.ReadLine();
                 }
 
                 if(s != parolaDaIndovinare)
                 {
-                    for (int i = 0; i <= parolaDaIndovinare.Length - 1; i++) 
+                    char[] chpP = promptParola.ToCharArray();
+                    for (int i = 0; i <= parolaDaIndovinare.Length - 1; i++)
                     {
-                        char[] chpP = promptParola.ToCharArray();
                         if (char.ToLower(parolaDaIndovinare[i]) == char.ToLower(s[i]))
                         {
                             chpP[i] = s[i];
                             promptParola = new string(chpP);
                         }
-                        
+
                         if (parolaDaIndovinare.Contains(s[i]) && s[i] != chpP[i])
                         {
                             suggest += s[i];
@@ -183,7 +175,7 @@ namespace anagrams
                 {
                     promptParola = s;
                 }
-                else if(s == "mi arrendo")
+                else if(s == "x")
                 {
                     Console.WriteLine(parolaDaIndovinare);
                 }

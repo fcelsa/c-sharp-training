@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using System.Text.Json;
 
 namespace anagrams
@@ -25,14 +24,32 @@ namespace anagrams
                 string jsonContent = awaiter.Result;
                 using JsonDocument document = JsonDocument.Parse(jsonContent, options);
                 JsonElement root = document.RootElement;
+                
 
                 foreach (var property in document.RootElement.EnumerateObject())
                 {
-                    Console.WriteLine($"{property.Name} ValueKind={property.Value.ValueKind} Value={property.Value}");
+                    if (property.Name == "query")
+                    {
+                        string checkResult = property.Value.ToString();
+                        if (checkResult.Contains("missing"))
+                        {
+                            finalDefinition = $"la parola {parola} non esiste";
+                        }
+                        else
+                        {
+                            int indiceExtract = checkResult.IndexOf("extract\":\"");
+                            if (indiceExtract != -1)
+                            {
+                                string restoStringa = checkResult.Substring(indiceExtract + "extract\":\"".Length);
+                                finalDefinition = HtmlToText.ConvertWithRegex(restoStringa);
+                            }
+                            else
+                            {
+                                Console.WriteLine("La sequenza 'extract\":\"' non è presente nella stringa.");
+                            }
+                        }
+                    }
                 }
-
-                finalDefinition = HtmlToText.ConvertWithRegex(root.ToString());
-
             }
             return finalDefinition;
         }
