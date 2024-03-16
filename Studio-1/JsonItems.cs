@@ -6,7 +6,7 @@ namespace Studio_1
     {
         public int Id { get; set; }
         public string MenuName { get; set; }
-        public string descFile { get; set; }
+        public string DescFile { get; set; }
 
         private static JsonItems[] jsonitems;
         public static void JsonInit()
@@ -15,25 +15,25 @@ namespace Studio_1
             string json = string.Empty;
 
             // attenzione il file viene inizializzato così come segue solo se non esiste
-            if (!File.Exists(Program.JSONDATAFILE))
+            if (!File.Exists(Program.FullJsonDataFilePath))
             {
-                for (int i = 0; i < 25; i++)
+                for (int i = 0; i < 24; i++)
                 {
                     menuItemsJson[i] = new JsonItems();
                     menuItemsJson[i].Id = i;
                     menuItemsJson[i].MenuName = $"voce menu # {i}";
-                    menuItemsJson[i].descFile = $"default.txt";
+                    menuItemsJson[i].DescFile = $"default.txt";
                 }
 
                 json = JsonSerializer.Serialize(menuItemsJson, new JsonSerializerOptions { WriteIndented = true });
 
-                File.WriteAllText(Program.JSONDATAFILE, json);
+                File.WriteAllText(Program.FullJsonDataFilePath, json);
                 jsonitems = menuItemsJson;
 
             }
             else
             {
-                json = File.ReadAllText(Program.JSONDATAFILE);
+                json = File.ReadAllText(Program.FullJsonDataFilePath);
                 jsonitems = JsonSerializer.Deserialize<JsonItems[]>(json);
             }
         }
@@ -52,7 +52,7 @@ namespace Studio_1
                     }
                     else
                     {
-                        menuResult = ReadTextFile.ReadTextFileAsString(item.descFile);
+                        menuResult = ReadTextFile.ReadTextFileAsString(item.DescFile);
                     }
                 }
             }

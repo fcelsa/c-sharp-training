@@ -2,12 +2,13 @@
 {
     internal class Program
     {
-        public const string JSONDATAFILE = @"assets\menu.json";
+        public const string JSONDATAFILE = "menu.json";
 
-        static readonly string assetFilePath = @"assets\";
-        public static string AssetFilePath 
+        public static readonly string AssetFilePath = Path.Combine("assets", "");
+
+        public static string FullJsonDataFilePath
         { 
-            get { return assetFilePath; }
+            get { return Path.Combine(AssetFilePath, JSONDATAFILE); }
         }
 
         static void Main(string[] args)
