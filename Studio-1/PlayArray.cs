@@ -49,7 +49,7 @@ namespace Studio_1
 
         public static bool PlayMatrici()
         {
-            // array moltidimensionali o matrice esempi array 2D e 3D
+            // array multidimensionali o matrice esempi array 2D e 3D
             string[,] codici = new string[3, 2]
             {
                 {"ABCD", "0010" },
