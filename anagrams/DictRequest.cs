@@ -33,7 +33,7 @@ namespace anagrams
                         string checkResult = property.Value.ToString();
                         if (checkResult.Contains("missing"))
                         {
-                            finalDefinition = $"la parola {parola} non esiste";
+                            Console.WriteLine($"la parola {parola} non esiste");
                         }
                         else
                         {
