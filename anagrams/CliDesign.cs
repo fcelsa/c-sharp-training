@@ -26,7 +26,7 @@ namespace anagrams
         public static void ShowScreen()
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
-            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Clear();
         }
         public static void ResetScreen()
