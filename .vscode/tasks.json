@@ -36,6 +36,21 @@
                 "${workspaceFolder}/anagrams/anagrams/anagrams.csproj"
             ],
             "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build-ncal",
+            "type": "process",
+            "command": "dotnet",
+            "args": [
+                "build",
+                "${workspaceFolder}/ncal/ncal.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "presentation": {
+                "reveal": "silent"
+            }
         }
     ]
 }
