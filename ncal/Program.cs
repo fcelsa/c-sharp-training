@@ -34,6 +34,7 @@ namespace ncal
             public string? CountryCode { get; set; }     // -s country_code: switch date
             public bool WeekNumbers { get; set; }        // -w: week numbers
             public bool YearDisplay { get; set; }        // -y: display year
+            public bool Compact { get; set; }            // -c: compact year display (old behavior)
             public int? Month { get; set; }              // month (1-12) or null
             public int? Year { get; set; }               // year (1-9999) or null
         }
@@ -182,6 +183,10 @@ namespace ncal
                         options.YearDisplay = true;
                         i++;
                         break;
+                    case "-c":
+                        options.Compact = true;
+                        i++;
+                        break;
 
                     // Argomenti che richiedono un valore
                     case "-A":
@@ -287,7 +292,8 @@ namespace ncal
                 if (rowMonths.Count > 0)
                 {
                     int maxLines = rowMonths.Max(m => m.Count);
-                    int widthMonth = 27;  // Larghezza coerente per mesi in formato completo
+                    // Full month width: user requirement -> 28 without week column, 32 with week column
+                    int widthMonth = options.WeekNumbers ? 32 : 28;
                     for (int lineIdx = 0; lineIdx < maxLines; lineIdx++)
                     {
                         var line = new List<string>();
@@ -327,16 +333,15 @@ namespace ncal
             int maxLines = Math.Max(Math.Max(prevLines.Count, currLines.Count), nextLines.Count);
 
             // Stampa i tre mesi affiancati
-            // Larghezza per mese completo: 3 caratteri per colonna (2 cifre + marker/space)
-            // se -w: 1 colonna settimana + 7 giorni => 8 * 3 = 24
-            // altrimenti: 7 * 3 = 21
-            int widthMonth = options.WeekNumbers ? 24 : 21;
+            // Usa la larghezza del "full month" richiesta: 28 senza week column, 32 con week column
+            int widthMonth = options.WeekNumbers ? 32 : 28;
             for (int i = 0; i < maxLines; i++)
             {
                 string prevLine = i < prevLines.Count ? prevLines[i] : "".PadRight(widthMonth);
                 string currLine = i < currLines.Count ? currLines[i] : "".PadRight(widthMonth);
                 string nextLine = i < nextLines.Count ? nextLines[i] : "".PadRight(widthMonth);
 
+                // separatore fra blocchi mese: 3 spazi
                 Console.WriteLine($"{prevLine}   {currLine}   {nextLine}");
             }
         }
@@ -349,28 +354,37 @@ namespace ncal
             var lines = new List<string>();
             
             // Intestazione mese (centrata)
+            // Common part: month header centered in the block width
             string monthName = LocalizationHelper.GetMonthName(month);
             string header = $"{monthName} {year}";
-            int widthMonth = 27;  // Larghezza coerente per mesi in formato completo
+            // Full month width requirement from user: 28 chars (no week), 32 chars (with week)
+            int widthMonth = options.WeekNumbers ? 32 : 28;
             int paddingMonth = (widthMonth - header.Length) / 2;
             string centeredHeader = header.PadLeft(header.Length + paddingMonth).PadRight(widthMonth);
             lines.Add(centeredHeader);
-            
+
             // Riga giorni della settimana
+            // Common: build 3-char day cells (2-letter + trailing space)
             var headerParts = new List<string>();
             string[] dayNames = GetLocalizedDayNames();
-            
+
+            string weekLabelCell = string.Empty;
             if (options.WeekNumbers)
             {
-                headerParts.Add("S".PadRight(2));
+                // Specific: week column label (2 chars)
+                weekLabelCell = LocalizationHelper.WeekColumnLabel.PadRight(2);
             }
-            
+
+            // Build day cells (each 4 chars): up to 3-letter abbreviation + trailing space
+            var dayCells = new List<string>();
             foreach (var dayName in dayNames)
             {
-                // dayName is already short (e.g., "lu"), pad to 2 chars and reserve marker slot
-                headerParts.Add(dayName.PadRight(2) + " ");
+                string dayAbbr = dayName.Length >= 3 ? dayName.Substring(0, 3) : dayName;
+                dayCells.Add(dayAbbr.PadRight(3) + " ");
             }
-            string dayHeader = string.Join("", headerParts);
+
+            // Assemble header: optional week label (2 chars) + 2 spaces + concatenated 4-char day cells
+            string dayHeader = options.WeekNumbers ? weekLabelCell + "  " + string.Join("", dayCells) : string.Join("", dayCells);
             lines.Add(dayHeader.PadRight(widthMonth));
             
             // Ottiene il primo giorno del mese
@@ -397,20 +411,23 @@ namespace ncal
                 string dayStr;
                 if (day == today.Day && month == today.Month && year == today.Year)
                 {
-                    dayStr = day.ToString().PadLeft(2, ' ') + LocalizationHelper.TodayMarker;
+                    // Highlight today: place marker in the 4th position
+                    dayStr = day.ToString().PadLeft(3, ' ') + LocalizationHelper.TodayMarker;
                 }
                 else
                 {
-                    dayStr = day.ToString().PadLeft(2, ' ') + " ";
+                    // Regular day: right-align in 3 chars, then trailing space -> total 4 chars
+                    dayStr = day.ToString().PadLeft(3, ' ') + " ";
                 }
-                
+
                 columns[columnIndex].Add(dayStr);
             }
             
             // Aggiunge spazi vuoti prima del primo giorno (una cella = 3 char)
             for (int i = 0; i < firstDayColumnIndex; i++)
             {
-                columns[i].Insert(0, "   ");
+                // Empty day cell is 4 spaces now
+                columns[i].Insert(0, "    ");
             }
             
             // Stampa le settimane (righe)
@@ -438,15 +455,19 @@ namespace ncal
 
                     if (weekNumber > 0)
                     {
-                        // Week number as 2 digits + trailing space to form a 3-char cell
-                        weekParts.Add(weekNumber.ToString().PadLeft(2, '0') + " ");
+                        // Week number occupies 2 chars (no trailing space here)
+                        weekParts.Add(weekNumber.ToString().PadLeft(2, '0'));
                     }
                     else
                     {
-                        weekParts.Add("   ");
+                        weekParts.Add("  ");
                     }
+
+                    // Specific: two spaces between week column and days
+                    weekParts.Add("  ");
                 }
 
+                // Common: append each day cell (already 3 chars)
                 for (int col = 0; col < 7; col++)
                 {
                     if (weekRow < columns[col].Count)
@@ -460,7 +481,7 @@ namespace ncal
                     }
                 }
 
-                // Join without extra separator: each element already a 3-char cell
+                // Join without extra separator: elements include the two-space separator when week numbers active
                 lines.Add(string.Join("", weekParts).PadRight(widthMonth));
             }
             
@@ -483,11 +504,20 @@ namespace ncal
             {
                 // Per ogni riga, visualizza 3 mesi affiancati
                 List<string>[] monthsLines = new List<string>[3];
-                
+
                 for (int col = 0; col < 3; col++)
                 {
                     int month = row * 3 + col + 1;
-                    monthsLines[col] = GenerateMonthLines(month, year, today, options);
+                    if (options.Compact)
+                    {
+                        // compact: usa le linee compatte (vecchio comportamento)
+                        monthsLines[col] = GenerateMonthLines(month, year, today, options);
+                    }
+                    else
+                    {
+                        // full: usa il formato "full month" (larghezza 28/32)
+                        monthsLines[col] = GenerateMonthFullLines(month, year, today, options);
+                    }
                 }
 
                 // Stampa i mesi affiancati riga per riga
@@ -495,7 +525,11 @@ namespace ncal
                 for (int lineIdx = 0; lineIdx < maxLines; lineIdx++)
                 {
                     var line = new List<string>();
-                        int miniWidth = 21;
+
+                    if (options.Compact)
+                    {
+                        // compact mini width: 21 (no week) o 24 (with week)
+                        int miniWidth = options.WeekNumbers ? 24 : 21;
                         for (int col = 0; col < 3; col++)
                         {
                             if (lineIdx < monthsLines[col].Count)
@@ -507,6 +541,25 @@ namespace ncal
                                 line.Add("".PadRight(miniWidth)); // Larghezza dei mesi compatti
                             }
                         }
+                    }
+                    else
+                    {
+                        // full width: 28 (no week) o 32 (with week)
+                        int fullWidth = options.WeekNumbers ? 32 : 28;
+                        for (int col = 0; col < 3; col++)
+                        {
+                            if (lineIdx < monthsLines[col].Count)
+                            {
+                                line.Add(monthsLines[col][lineIdx]);
+                            }
+                            else
+                            {
+                                line.Add("".PadRight(fullWidth));
+                            }
+                        }
+                    }
+
+                    // separatore fra blocchi mese: 3 spazi
                     Console.WriteLine(string.Join("   ", line));
                 }
                 Console.WriteLine();
@@ -521,6 +574,9 @@ namespace ncal
             var lines = new List<string>();
 
             // Intestazione mese (solo nome, centrato - anno già visualizzato in cima)
+            // NOTE: this function generates the "compact" month block used for -c (compact)
+            // Common parts (header/day cell generation) are similar to full-month generator
+            // Specific: compact block width is smaller (21/24) and does not include extra spacing between week column and days
             string monthName = LocalizationHelper.GetMonthNameAbbreviated(month);
             // Larghezza coerente per formato compatto: 3 char per colonna -> 7*3 = 21
             // se -w è attivo, si aggiunge la colonna settimana (3 char) -> 24
@@ -539,9 +595,10 @@ namespace ncal
 
             for (int i = 0; i < 7; i++)
             {
-                string dayAbbr = dayNames[i].Length >= 2 ? dayNames[i].Substring(0, 2) : dayNames[i];
-                // each day header occupies 3 chars (2 letters + space)
-                dayHeaderParts.Add(dayAbbr.PadRight(2) + " ");
+                // preserve up to 3 characters for the weekday header (e.g., "lun", "mar")
+                string dayAbbr = dayNames[i].Length >= 3 ? dayNames[i].Substring(0, 3) : dayNames[i];
+                // each day header occupies 3 chars
+                dayHeaderParts.Add(dayAbbr.PadRight(3));
             }
             string dayHeader = string.Join("", dayHeaderParts);
             lines.Add(dayHeader.PadRight(widthMonth));
@@ -631,6 +688,7 @@ namespace ncal
                     }
                 }
 
+                // Common: join 3-char cells directly; compact does not add extra two-space separator
                 lines.Add(string.Join("", weekParts).PadRight(widthMonth));
             }
 
@@ -644,120 +702,12 @@ namespace ncal
         {
             int month = displayDate.Month;
             int year = displayDate.Year;
-            
-            // Stampa intestazione: nome mese e anno (centrato)
-            string monthName = LocalizationHelper.GetMonthName(month);
-            string headerText = $"{monthName} {year}";
-            int totalWidth = options.WeekNumbers ? 26 : 20;
-            int padding = (totalWidth - headerText.Length) / 2;
-            Console.WriteLine(headerText.PadLeft(headerText.Length + padding).PadRight(totalWidth));
-            
-            // Stampa riga dei giorni della settimana ordinati secondo il primo giorno della settimana
-            string[] dayNames = GetLocalizedDayNames();
-            var headerParts = new List<string>();
-            
-            if (options.WeekNumbers)
+            // Reuse the full-month generator for single-month display to ensure consistent formatting
+            // This centralizes the formatting (common) and keeps DisplayCalendar simple (specific: single-month output)
+            var lines = GenerateMonthFullLines(month, year, today, options);
+            foreach (var l in lines)
             {
-                headerParts.Add("S".PadRight(2));
-            }
-            
-            foreach (var dayName in dayNames)
-            {
-                headerParts.Add(dayName);
-            }
-            Console.WriteLine(string.Join(LocalizationHelper.ColumnSeparator, headerParts));
-            
-            // Ottiene il primo giorno del mese
-            DateTime firstDay = new DateTime(year, month, 1);
-            int firstDayColumnIndex = GetDayColumnIndex((int)firstDay.DayOfWeek);
-            
-            // Ottiene il numero di giorni nel mese
-            int daysInMonth = DateTime.DaysInMonth(year, month);
-            
-            // Crea la griglia del calendario
-            // Ogni colonna rappresenta un giorno della settimana
-            List<string>[] columns = new List<string>[7];
-            for (int i = 0; i < 7; i++)
-            {
-                columns[i] = new List<string>();
-            }
-            
-            // Popola le colonne
-            for (int day = 1; day <= daysInMonth; day++)
-            {
-                DateTime cellDate = new DateTime(year, month, day);
-                int dayOfWeek = (int)cellDate.DayOfWeek;
-                int columnIndex = GetDayColumnIndex(dayOfWeek);
-                
-                // Formatta il giorno (con eventuale highlight per "oggi")
-                string dayStr;
-                if (day == today.Day && month == today.Month && year == today.Year)
-                {
-                    // Evidenzia il giorno di oggi
-                    dayStr = day.ToString().PadLeft(2, ' ') + LocalizationHelper.TodayMarker;
-                }
-                else
-                {
-                    dayStr = day.ToString().PadLeft(2, ' ') + " ";
-                }
-                
-                columns[columnIndex].Add(dayStr);
-            }
-            
-            // Aggiunge spazi vuoti prima del primo giorno
-            for (int i = 0; i < firstDayColumnIndex; i++)
-            {
-                columns[i].Insert(0, "   ");
-            }
-            
-            // Stampa le settimane (righe)
-            int maxRows = columns.Max(c => c.Count);
-            for (int row = 0; row < maxRows; row++)
-            {
-                var rowParts = new List<string>();
-                
-                // Se -w è specificato, stampa il numero di settimana all'inizio della riga
-                if (options.WeekNumbers)
-                {
-                    // Calcola il numero di settimana ISO 8601 da un giorno della settimana
-                    // Cerca il primo giorno del mese in questa riga per determinare la settimana
-                    int weekNumber = -1;
-                    for (int col = 0; col < 7; col++)
-                    {
-                        if (row < columns[col].Count && !columns[col][row].Trim().Equals(""))
-                        {
-                            // Trova il primo giorno non vuoto in questa riga
-                            if (int.TryParse(columns[col][row].Trim().TrimEnd('*'), out int dayOfMonth))
-                            {
-                                DateTime cellDate = new DateTime(year, month, dayOfMonth);
-                                weekNumber = ISO8601Helper.GetISOWeekNumber(cellDate);
-                                break;
-                            }
-                        }
-                    }
-                    
-                    if (weekNumber > 0)
-                    {
-                        rowParts.Add(weekNumber.ToString().PadLeft(2, '0'));
-                    }
-                    else
-                    {
-                        rowParts.Add("  ");
-                    }
-                }
-                
-                for (int col = 0; col < 7; col++)
-                {
-                    if (row < columns[col].Count)
-                    {
-                        rowParts.Add(columns[col][row]);
-                    }
-                    else
-                    {
-                        rowParts.Add("   ");
-                    }
-                }
-                Console.WriteLine(string.Join(LocalizationHelper.ColumnSeparator, rowParts));
+                Console.WriteLine(l);
             }
             Console.WriteLine();
         }
