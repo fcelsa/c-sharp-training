@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-
 namespace ncal
 {
     /// <summary>
-    /// ncal - displays a calendar and the date of Easter
-    /// Implementazione della versione POSIX di ncal
+    /// ncal - displays a calendar in the terminal
     /// </summary>
     internal class Program
     {
@@ -20,21 +18,18 @@ namespace ncal
             public bool ThreeMonths { get; set; }        // -3: previous, current, next month
             public int MonthsAfter { get; set; }         // -A number: months after
             public int MonthsBefore { get; set; }        // -B number: months before
-            public bool CalMode { get; set; }            // -C: switch to cal mode
+            public bool QuarterMode { get; set; }        // -C: switch to quarter mode
             public DateTime? CustomDate { get; set; }    // -d yyyy-mm: custom current date
-            public bool Easter { get; set; }             // -e: display Easter date (western)
             public DateTime? CustomHighlight { get; set; } // -H yyyy-mm-dd: custom highlight date
-            public bool NoHighlight { get; set; }        // -h: toggle highlighting
-            public bool NcalMode { get; set; }           // -N: switch to ncal mode
-            public bool JulianCalendar { get; set; }     // -J: Julian calendar
-            public bool JulianDays { get; set; }         // -j: Julian days
-            public bool MondayFirst { get; set; }        // -M: Monday first (cal mode)
-            public bool OrthodoxEaster { get; set; }     // -o: Orthodox Easter
+            public bool HelpRequested { get; set; }        // -h/--help requested
+            public bool MondayFirst { get; set; }        // -M: Monday first (override locale first day)
             public bool PrintCountryCodes { get; set; }  // -p: print country codes
             public string? CountryCode { get; set; }     // -s country_code: switch date
+            public bool InvalidCountryCode { get; set; }
+            public string? InvalidCountryCodeValue { get; set; }
             public bool WeekNumbers { get; set; }        // -w: week numbers
             public bool YearDisplay { get; set; }        // -y: display year
-            public bool Compact { get; set; }            // -c: compact year display (old behavior)
+            public bool Compact { get; set; }            // -c: compact year display
             public int? Month { get; set; }              // month (1-12) or null
             public int? Year { get; set; }               // year (1-9999) or null
         }
@@ -44,11 +39,39 @@ namespace ncal
             try
             {
                 var options = ParseCommandLine(args);
-                
-                if (options == null)
+
+
+                // If an invalid country code was detected during parsing, print a helpful message
+                if (options.InvalidCountryCode)
                 {
+                    Console.Error.WriteLine($"{LocalizationHelper.GetErrorMessage("invalid_country_code")}: {options.InvalidCountryCodeValue}");
+                    Console.Error.WriteLine(string.Join("\n", LocalizationHelper.GetSupportedCountryCodesDisplay()));
+                    throw new ArgumentException("invalid_country_code");
+                }
+
+                if (options.HelpRequested)
+                {
+                    // if -s was provided, ensure culture is applied before printing usage
+                    if (!string.IsNullOrEmpty(options.CountryCode))
+                    {
+                        LocalizationHelper.TrySetCultureByCode(options.CountryCode);
+                    }
                     PrintUsage();
                     return;
+                }
+
+                // If -p is specified, print available country codes and exit
+                if (options.PrintCountryCodes)
+                {
+                    foreach (var s in LocalizationHelper.GetSupportedCountryCodesDisplay())
+                        Console.WriteLine(s);
+                    return;
+                }
+
+                // If -s was used, set the requested culture before computing locale-dependent values
+                if (!string.IsNullOrEmpty(options.CountryCode) && !options.InvalidCountryCode)
+                {
+                    LocalizationHelper.TrySetCultureByCode(options.CountryCode);
                 }
 
                 // Determina il primo giorno della settimana
@@ -68,7 +91,19 @@ namespace ncal
                 }
 
                 // Determina la data "oggi" (per highlight)
-                DateTime today = options.CustomHighlight ?? DateTime.Now;
+                // -H (CustomHighlight) e -d (CustomDate) influiscono su "today"
+                DateTime today = options.CustomHighlight ?? options.CustomDate ?? DateTime.Now;
+
+                // Se -C (QuarterMode) è specificato, visualizziamo sempre il trimestre corrente
+                if (options.QuarterMode)
+                {
+                    options.ThreeMonths = true;
+                    // Calcola il primo mese del trimestre basandosi su 'today'
+                    int quarterStart = ((today.Month - 1) / 3) * 3 + 1; // 1,4,7,10
+                    int centerMonth = quarterStart + 1; // mese centrale del trimestre
+                    options.Month = centerMonth;
+                    options.Year = today.Year;
+                }
 
                 // Determina il mese/anno da visualizzare
                 DateTime displayDate;
@@ -106,13 +141,19 @@ namespace ncal
             }
             catch (Exception ex)
             {
+                // If we've already printed a detailed message for invalid country code, don't duplicate it
+                if (ex.Message == "invalid_country_code")
+                {
+                    Environment.Exit(1);
+                }
+
                 Console.Error.WriteLine($"ncal: {LocalizationHelper.GetErrorMessage(ex.Message)}");
                 Environment.Exit(1);
             }
         }
 
         /// <summary>
-        /// Effettua il parsing della linea di comando
+        /// parsing della linea di comando
         /// </summary>
         private static NcalOptions? ParseCommandLine(string[] args)
         {
@@ -140,35 +181,17 @@ namespace ncal
                         i++;
                         break;
                     case "-C":
-                        options.CalMode = true;
-                        i++;
-                        break;
-                    case "-e":
-                        options.Easter = true;
+                        options.QuarterMode = true;
                         i++;
                         break;
                     case "-h":
-                        options.NoHighlight = !options.NoHighlight;
-                        i++;
-                        break;
-                    case "-J":
-                        options.JulianCalendar = true;
-                        i++;
-                        break;
-                    case "-j":
-                        options.JulianDays = true;
+                    case "--help":
+                        // POSIX convention: -h or --help prints usage/help
+                        options.HelpRequested = true;
                         i++;
                         break;
                     case "-M":
                         options.MondayFirst = true;
-                        i++;
-                        break;
-                    case "-N":
-                        options.NcalMode = true;
-                        i++;
-                        break;
-                    case "-o":
-                        options.OrthodoxEaster = true;
                         i++;
                         break;
                     case "-p":
@@ -229,6 +252,13 @@ namespace ncal
                         if (i + 1 >= args.Length)
                             throw new ArgumentException("missing_arg");
                         options.CountryCode = args[i + 1];
+                        // Apply culture immediately so that errors and usage are localized
+                            if (!LocalizationHelper.TrySetCultureByCode(options.CountryCode))
+                            {
+                                // mark invalid code; Main will handle printing and exiting
+                                options.InvalidCountryCode = true;
+                                options.InvalidCountryCodeValue = options.CountryCode;
+                            }
                         i += 2;
                         break;
 
@@ -248,6 +278,9 @@ namespace ncal
                 if (!int.TryParse(positionalArgs[0], out int year) || year < 1 || year > 9999)
                     throw new ArgumentException("invalid_year");
                 options.Year = year;
+                // If only a year is provided as positional argument, display the whole year
+                // same behavior as the -y option
+                options.YearDisplay = true;
             }
             else if (positionalArgs.Count == 2)
             {
@@ -257,6 +290,12 @@ namespace ncal
                     throw new ArgumentException("invalid_year");
                 options.Month = month;
                 options.Year = year2;
+            }
+
+            // Controllo conflitti sulle opzioni: -C non è consentito insieme a -A o -B
+            if (options.QuarterMode && (options.MonthsAfter > 0 || options.MonthsBefore > 0))
+            {
+                throw new ArgumentException("conflicting_options");
             }
 
             return options;
@@ -596,7 +635,7 @@ namespace ncal
             for (int i = 0; i < 7; i++)
             {
                 // preserve up to 3 characters for the weekday header (e.g., "lun", "mar")
-                string dayAbbr = dayNames[i].Length >= 3 ? dayNames[i].Substring(0, 3) : dayNames[i];
+                string dayAbbr = dayNames[i].Length >= 3 ? dayNames[i][..2] : dayNames[i];
                 // each day header occupies 3 chars
                 dayHeaderParts.Add(dayAbbr.PadRight(3));
             }
