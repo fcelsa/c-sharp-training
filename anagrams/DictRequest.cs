@@ -56,11 +56,20 @@ namespace anagrams
 
         public static async Task<string> CallURL(string url)
         {
-            HttpClient client = new HttpClient();
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
+            using HttpClient client = new HttpClient();
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
             client.DefaultRequestHeaders.Accept.Clear();
-            var response = client.GetStringAsync(url);
-            return await response;
+            client.DefaultRequestHeaders.UserAgent.ParseAdd("AnagramsApp/1.0 (https://example.org)");
+            try
+            {
+                var response = await client.GetStringAsync(url);
+                return response ?? string.Empty;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Errore in CallURL: {ex.Message}");
+                return string.Empty;
+            }
         }
     }
 }

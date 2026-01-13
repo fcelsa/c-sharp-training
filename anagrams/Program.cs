@@ -25,6 +25,13 @@ namespace anagrams
                 filePath = GetFileFromUser();
             }
 
+            // Se l'utente ha digitato il comando di uscita quando gli è stato chiesto il file,
+            // esci immediatamente invece di entrare nel ciclo di caricamento del dizionario.
+            if (!string.IsNullOrEmpty(filePath) && filePath.Trim().ToLower() == QUIT_KEYWORD)
+            {
+                return;
+            }
+
         START_FILE_REQUEST:
 
             CliDesign.PrepareScreen();
@@ -51,7 +58,7 @@ namespace anagrams
                     var line = Console.ReadLine();
                     if (!string.IsNullOrEmpty(line) && !string.IsNullOrWhiteSpace(line))
                     {
-                        line = line.ToLower();
+                        line = line.Trim().ToLower();
                         var performance = Stopwatch.GetTimestamp();
 
                         switch (line)
@@ -101,6 +108,7 @@ namespace anagrams
             do
             {
                 string? s = Console.ReadLine();
+                s = s?.Trim();
                 // default per lunghezza parola 5 se user preme invio
                 lenOfWordUserInput = string.IsNullOrEmpty(s) ? "5" : s;
             } while (!(int.TryParse(lenOfWordUserInput, out lenOfWordVal) && lenOfWordVal >= 3 && lenOfWordVal <= 12));
@@ -165,10 +173,11 @@ namespace anagrams
 
                 string? s = Console.ReadLine();
 
-                while (string.IsNullOrEmpty(s) || s.Length != parolaDaIndovinare.Length || s == "x")
+                while (string.IsNullOrEmpty(s) || s.Trim().Length != parolaDaIndovinare.Length || s.Trim().ToLower() == "x")
                 {
                     s = Console.ReadLine();
                 }
+                s = s.Trim();
 
                 if (s != parolaDaIndovinare)
                 {
@@ -237,6 +246,7 @@ namespace anagrams
             {
                 ws = Console.ReadLine();
             }
+            ws = ws.Trim().ToLower();
             if (ws == "q")
             {
                 CliDesign.ShowScreen();
@@ -335,6 +345,7 @@ namespace anagrams
         {
             Console.WriteLine("Inserisci il percorso del file parole [dizionario.txt]");
             var filePath = Console.ReadLine();
+            filePath = filePath?.Trim();
             if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrEmpty(filePath))
             {
                 filePath = Path.Combine(Environment.CurrentDirectory, "dizionario.txt");

@@ -9,7 +9,7 @@ namespace anagrams
 {
     public static class CliDesign
     {
-        static readonly Thread thread1 = new(UtilsThread.ScreenClock);
+        static Thread? thread1 = null;
         public static void PrepareScreen()
         {
             Console.BackgroundColor = ConsoleColor.DarkBlue;
@@ -19,8 +19,15 @@ namespace anagrams
             // disegno della cornice
             //
 
-            //orologio (e timer?) ...ma controllare che il thread non sia già in esecuzione
-            thread1.Start();
+            // orologio (e timer?) ... avvia il thread solo se non è già in esecuzione
+            if (thread1 == null || !thread1.IsAlive)
+            {
+                thread1 = new Thread(UtilsThread.ScreenClock)
+                {
+                    IsBackground = true
+                };
+                thread1.Start();
+            }
         }
 
         public static void ShowScreen()
@@ -36,7 +43,15 @@ namespace anagrams
             Console.Clear();
 
             // terminazione dei thread attivati.
-            thread1.Interrupt();
+            if (thread1 != null && thread1.IsAlive)
+            {
+                try
+                {
+                    thread1.Interrupt();
+                }
+                catch { }
+            }
+            thread1 = null;
             
         }
 

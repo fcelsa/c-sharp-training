@@ -38,6 +38,9 @@
                 }
             }
             Console.WriteLine("Done.");
+            Console.WriteLine(AssetFilePath);
+            Console.WriteLine("Premi un tasto per continuare...");
+            Console.ReadKey();
 
 
         MAIN_INPUT_CYCLE:
